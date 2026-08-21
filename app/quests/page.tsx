@@ -16,11 +16,13 @@ type Quest = {
 export default function QuestsPage() {
   const [quests, setQuests] = useState<Quest[]>([]);
   const [joinedQuestIds, setJoinedQuestIds] = useState<Set<string>>(new Set());
+  const [activeQuestId, setActiveQuestId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [joiningId, setJoiningId] = useState<string | null>(null);
   const [pendingQuest, setPendingQuest] = useState<Quest | null>(null);
+  const [blockedQuest, setBlockedQuest] = useState<Quest | null>(null);
   const [message, setMessage] = useState("");
   const [questSuggestion, setQuestSuggestion] = useState("");
   const [suggesting, setSuggesting] = useState(false);
@@ -28,16 +30,19 @@ export default function QuestsPage() {
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (!pendingQuest) return;
+    if (!pendingQuest && !blockedQuest) return;
 
     function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") setPendingQuest(null);
+      if (event.key === "Escape") {
+        setPendingQuest(null);
+        setBlockedQuest(null);
+      }
     }
 
     window.addEventListener("keydown", closeOnEscape);
     confirmButtonRef.current?.focus();
     return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [pendingQuest]);
+  }, [pendingQuest, blockedQuest]);
 
   useEffect(() => {
     let active = true;
@@ -64,11 +69,14 @@ export default function QuestsPage() {
       if (authData.user) {
         const { data: memberships } = await supabase
           .from("quest_memberships")
-          .select("quest_id")
-          .eq("user_id", authData.user.id);
+          .select("quest_id, joined_at")
+          .eq("user_id", authData.user.id)
+          .eq("status", "active")
+          .order("joined_at", { ascending: false });
 
         if (!active) return;
         setJoinedQuestIds(new Set((memberships ?? []).map((membership) => membership.quest_id)));
+        setActiveQuestId(memberships?.[0]?.quest_id ?? null);
       }
 
       setLoading(false);
@@ -110,6 +118,7 @@ export default function QuestsPage() {
       if (error && error.code !== "23505") throw error;
 
       setJoinedQuestIds((current) => new Set(current).add(quest.id));
+      setActiveQuestId(quest.id);
       setMessage(`You joined ${quest.title}. Your journey starts at Day 1.`);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "We couldn’t join that quest. Please try again.");
@@ -119,8 +128,13 @@ export default function QuestsPage() {
   }
 
   function selectQuest(quest: Quest) {
-    if (joinedQuestIds.has(quest.id)) {
+    if (activeQuestId === quest.id) {
       window.location.assign("/quest");
+      return;
+    }
+
+    if (activeQuestId) {
+      setBlockedQuest(quest);
       return;
     }
 
@@ -189,7 +203,8 @@ export default function QuestsPage() {
       ) : (
         <section className="quest-picker-grid" aria-label="Available quests">
           {quests.map((quest, index) => {
-            const joined = joinedQuestIds.has(quest.id);
+            const joined = activeQuestId === quest.id;
+            const anotherQuestIsActive = Boolean(activeQuestId && !joined);
             const colors = ["coral", "violet", "lime"];
             return (
               <article className={`picker-card ${colors[index % colors.length]}`} key={quest.id}>
@@ -199,7 +214,7 @@ export default function QuestsPage() {
                 <p>{quest.description}</p>
                 <div className="picker-details"><span>{quest.proof_rhythm}</span><span>Start at Day 1</span></div>
                 <span className="picker-action-text" aria-hidden="true">
-                  {joined ? "Open quest →" : joiningId === quest.id ? "Joining…" : "Choose this quest →"}
+                  {joined ? "Open quest →" : joiningId === quest.id ? "Joining…" : anotherQuestIsActive ? "One active quest at a time →" : "Choose this quest →"}
                 </span>
                 <button
                   className="picker-card-action"
@@ -255,6 +270,21 @@ export default function QuestsPage() {
             <div className="quest-confirm-actions">
               <button type="button" onClick={() => setPendingQuest(null)}>Not now</button>
               <button ref={confirmButtonRef} type="button" onClick={confirmQuest}>Yes, join this quest →</button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {blockedQuest && (
+        <div className="quest-confirm-backdrop">
+          <button className="quest-confirm-dismiss" type="button" aria-label="Close message" tabIndex={-1} onClick={() => setBlockedQuest(null)} />
+          <section className="quest-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="active-quest-title">
+            <p className="panel-kicker">One commitment at a time</p>
+            <h2 id="active-quest-title">You already have an active quest.</h2>
+            <p>Finish or leave {quests.find((quest) => quest.id === activeQuestId)?.title || "your current quest"} before joining {blockedQuest.title}.</p>
+            <div className="quest-confirm-actions">
+              <button type="button" onClick={() => setBlockedQuest(null)}>Not now</button>
+              <button ref={confirmButtonRef} type="button" onClick={() => window.location.assign("/quest")}>Open current quest →</button>
             </div>
           </section>
         </div>
