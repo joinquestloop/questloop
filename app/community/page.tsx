@@ -153,9 +153,13 @@ export default function CommunityPage() {
       </header>
 
       <section className="community-intro">
-        <p className="eyebrow"><span /> Progress together</p>
-        <h1>Community<br /><em>proof feed.</em></h1>
+        <div className="community-sparkles" aria-hidden="true"><span>✦</span><span>♥</span><span>✓</span><span>＋1</span></div>
+        <p className="eyebrow"><span /> Community · Progress together</p>
+        <h1>Show up.<br /><em>Cheer each other on.</em></h1>
         <p>{quest ? `Public progress from members of ${quest.title}.` : "See what your quest community is building and learning."}</p>
+        {quest && !loading && (
+          <div className="community-momentum"><span>✦</span><strong>{proofs.length} progress moments</strong><span>shared by your quest community</span></div>
+        )}
       </section>
 
       {loading ? (
@@ -168,11 +172,11 @@ export default function CommunityPage() {
         <section className="quest-picker-empty"><h2>No public proofs yet.</h2><p>Be the first member to share progress with this quest.</p><a className="auth-submit link-button" href="/quest">Submit today’s proof →</a></section>
       ) : (
         <section className="community-feed" aria-label={`${quest.title} public proofs`}>
-          {proofs.map((proof) => {
+          {proofs.map((proof, index) => {
             const isMine = proof.user_id === userId;
             const hasCheered = myCheers.has(proof.id);
             return (
-              <article className="feed-proof-card" key={proof.id}>
+              <article className="feed-proof-card" key={proof.id} style={{ animationDelay: `${Math.min(index, 8) * 55}ms` }}>
                 <div className="proof-author-avatar" aria-hidden="true">{(handles[proof.user_id] || "M").replace("@", "").charAt(0).toUpperCase()}</div>
                 <div className="feed-proof-content">
                   <div className="feed-proof-meta">
