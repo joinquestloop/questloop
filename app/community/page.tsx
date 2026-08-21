@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 import { useEffect, useState } from "react";
+import AccountMenu from "../../components/account-menu";
 
 type FeedProof = {
   id: string;
@@ -138,7 +139,7 @@ export default function CommunityPage() {
     <main className="community-page">
       <header className="dashboard-header">
         <a className="brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
-        <nav><a href="/quest">My quest</a><a href="/quests">Discover</a></nav>
+        <nav><a href="/quest">My quest</a><a href="/quests">Discover</a><AccountMenu /></nav>
       </header>
 
       <section className="community-intro">

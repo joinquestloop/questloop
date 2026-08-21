@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 import { useEffect, useState } from "react";
+import AccountMenu from "../../components/account-menu";
 
 type Quest = {
   id: string;
@@ -105,7 +106,7 @@ export default function QuestsPage() {
           <span className="brand-mark" aria-hidden="true">Q</span>
           <span>QuestLoop</span>
         </a>
-        <span>Step 3 of 3</span>
+        <div className="quest-picker-account"><span>Step 3 of 3</span><AccountMenu /></div>
       </header>
 
       <section className="quest-picker-intro">

@@ -70,3 +70,10 @@ test("server-renders public profiles", async () => {
   const html = await response.text();
   assert.match(html, /Opening public profile/);
 });
+
+test("server-renders account settings", async () => {
+  const response = await render("/settings");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Opening account settings/);
+});

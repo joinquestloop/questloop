@@ -135,6 +135,47 @@ footer > a:last-child { justify-self: end; }
   footer > a, footer > a:last-child { justify-self: center; }
 }
 
+/* Account controls */
+.account-menu { display: inline-flex; align-items: center; gap: 8px; }
+.account-menu > a { padding: 8px 10px; border-radius: 999px; background: #e8e6de; font-family: var(--font-geist-mono); font-size: 9px; }
+.account-menu button { padding: 0; border: 0; background: transparent; color: #757970; cursor: pointer; font-size: 10px; }
+.account-loading, .account-signin { color: #7a7e76; font-size: 10px; }
+.quest-picker-account { display: flex; align-items: center; gap: 16px; }
+.quest-picker-account > span { font-family: var(--font-geist-mono); font-size: 9px; font-weight: 800; text-transform: uppercase; }
+
+.settings-page { min-height: 100vh; background: var(--paper); }
+.settings-loading { display: grid; place-items: center; }
+.settings-empty { width: min(540px, calc(100% - 40px)); margin: 80px auto; padding: 40px; border: 1px solid var(--ink); background: white; text-align: center; box-shadow: 8px 8px 0 var(--lime); }
+.settings-layout { max-width: 1176px; margin: 0 auto; padding: 75px 0; display: grid; grid-template-columns: 1fr 440px; gap: 90px; align-items: center; }
+.settings-intro h1 { margin: 0; font-size: clamp(52px, 6vw, 78px); line-height: .94; letter-spacing: -.07em; }
+.settings-intro h1 em { color: var(--coral); font-family: Georgia, serif; font-weight: 400; }
+.settings-intro > p:last-child { max-width: 500px; margin-top: 25px; color: #666a62; font-size: 17px; line-height: 1.6; }
+.settings-card { padding: 32px; border: 1px solid var(--ink); background: white; box-shadow: 9px 9px 0 var(--lime); }
+.settings-avatar { width: 72px; height: 72px; margin-bottom: 12px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--violet); font-size: 28px; font-weight: 800; }
+.settings-card > strong { color: #6f736b; }
+.settings-card form { margin-top: 25px; }
+.settings-card label { display: block; margin: 16px 0 8px; font-family: var(--font-geist-mono); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.settings-card input, .settings-card textarea { width: 100%; padding: 13px 14px; border: 1px solid #b8bbb3; border-radius: 3px; outline: 0; }
+.settings-card textarea { min-height: 110px; resize: vertical; }
+.settings-card input:focus, .settings-card textarea:focus { border-color: var(--ink); box-shadow: 0 0 0 2px rgba(200,241,105,.6); }
+.settings-bio-count { margin-top: 6px; color: #888c84; font-family: var(--font-geist-mono); font-size: 8px; text-align: right; }
+.settings-message { min-height: 18px; color: #42691b; font-size: 11px; font-weight: 700; }
+.settings-signout { width: 100%; margin-top: 18px; padding: 13px; border: 1px solid #c3c5bf; background: transparent; color: #a13929; cursor: pointer; font-weight: 750; }
+
+@media (max-width: 850px) {
+  .settings-layout { margin-inline: 20px; grid-template-columns: 1fr; gap: 50px; }
+  .dashboard-header nav { gap: 14px; }
+}
+
+@media (max-width: 560px) {
+  .settings-layout { padding-top: 50px; }
+  .settings-intro h1 { font-size: 49px; }
+  .settings-card { padding: 24px; }
+  .dashboard-header nav > a:not(:first-child) { display: none; }
+  .account-menu button { display: none; }
+  .quest-picker-account > span { display: none; }
+}
+
 /* Public profile */
 .public-profile-page { min-height: 100vh; padding-bottom: 80px; background: var(--paper); }
 .profile-loading { display: grid; place-items: center; }
