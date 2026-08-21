@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-html-link-for-pages */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AccountMenu from "../../components/account-menu";
 
 type Quest = {
@@ -19,7 +19,21 @@ export default function QuestsPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [joiningId, setJoiningId] = useState<string | null>(null);
+  const [pendingQuest, setPendingQuest] = useState<Quest | null>(null);
   const [message, setMessage] = useState("");
+  const confirmButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!pendingQuest) return;
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setPendingQuest(null);
+    }
+
+    window.addEventListener("keydown", closeOnEscape);
+    confirmButtonRef.current?.focus();
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [pendingQuest]);
 
   useEffect(() => {
     let active = true;
@@ -99,6 +113,22 @@ export default function QuestsPage() {
     }
   }
 
+  function selectQuest(quest: Quest) {
+    if (joinedQuestIds.has(quest.id)) {
+      window.location.assign("/quest");
+      return;
+    }
+
+    setPendingQuest(quest);
+  }
+
+  function confirmQuest() {
+    if (!pendingQuest) return;
+    const quest = pendingQuest;
+    setPendingQuest(null);
+    void joinQuest(quest);
+  }
+
   return (
     <main className="choose-quest-page">
       <header className="quest-picker-header">
@@ -140,7 +170,7 @@ export default function QuestsPage() {
                 <button
                   className="picker-card-action"
                   type="button"
-                  onClick={() => joinQuest(quest)}
+                  onClick={() => selectQuest(quest)}
                   disabled={joiningId === quest.id}
                   aria-label={joined ? `Open ${quest.title}` : `Choose ${quest.title}`}
                 >
@@ -154,6 +184,26 @@ export default function QuestsPage() {
 
       <p className="quest-picker-message" aria-live="polite">{message}</p>
       <p className="quest-picker-note">You can discover more quests later. For now, consistency beats collecting commitments.</p>
+
+      {pendingQuest && (
+        <div className="quest-confirm-backdrop">
+          <button className="quest-confirm-dismiss" type="button" aria-label="Close confirmation" tabIndex={-1} onClick={() => setPendingQuest(null)} />
+          <section
+            className="quest-confirm-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quest-confirm-title"
+          >
+            <p className="panel-kicker">Ready for Day 1?</p>
+            <h2 id="quest-confirm-title">Join {pendingQuest.title}?</h2>
+            <p>Your journey will start at Day 1 today. You can move at your own pace and share proof as you progress.</p>
+            <div className="quest-confirm-actions">
+              <button type="button" onClick={() => setPendingQuest(null)}>Not now</button>
+              <button ref={confirmButtonRef} type="button" onClick={confirmQuest}>Yes, join this quest →</button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

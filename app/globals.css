@@ -119,7 +119,7 @@ footer > a:last-child { justify-self: end; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .orbit-two { animation: none; } .picker-card, .picker-symbol, .picker-action-text { transition: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .orbit-two, .quest-confirm-backdrop, .quest-confirm-dialog { animation: none; } .picker-card, .picker-symbol, .picker-action-text { transition: none; } }
 
 @media (max-width: 850px) {
   nav > a:first-child { display: none; }
@@ -156,6 +156,8 @@ footer > a:last-child { justify-self: end; }
   footer { padding: 32px 20px; grid-template-columns: 1fr; gap: 24px; text-align: center; }
   footer p { margin: 0; }
   footer > a, footer > a:last-child { justify-self: center; }
+  .quest-confirm-dialog { padding: 26px; }
+  .quest-confirm-actions { align-items: stretch; flex-direction: column-reverse; }
 }
 
 /* Account controls */
@@ -384,6 +386,17 @@ footer > a:last-child { justify-self: end; }
 .quest-picker-status { padding: 40px 0; font-size: 17px; }
 .quest-picker-message { min-height: 22px; padding: 22px 32px 0; color: #3a4f20; font-weight: 700; text-align: center; }
 .quest-picker-note { padding: 14px 32px 0; color: #777b73; font-size: 11px; text-align: center; }
+.quest-confirm-backdrop { position: fixed; z-index: 20; inset: 0; padding: 20px; display: grid; place-items: center; background: rgba(16,18,15,.7); backdrop-filter: blur(5px); animation: confirm-fade-in .18s ease-out; }
+.quest-confirm-dismiss { position: absolute; inset: 0; width: 100%; border: 0; background: transparent; cursor: default; }
+.quest-confirm-dialog { position: relative; width: min(510px, 100%); padding: 34px; border: 1px solid var(--ink); border-radius: 4px; background: var(--paper); box-shadow: 10px 10px 0 var(--lime); animation: confirm-rise-in .24s ease-out; }
+.quest-confirm-dialog h2 { margin: 0; font-size: clamp(31px, 5vw, 44px); line-height: 1; letter-spacing: -.05em; }
+.quest-confirm-dialog > p:not(.panel-kicker) { margin: 20px 0 0; color: #62665e; line-height: 1.6; }
+.quest-confirm-actions { margin-top: 28px; display: flex; justify-content: flex-end; gap: 10px; }
+.quest-confirm-actions button { padding: 13px 16px; border: 1px solid var(--ink); border-radius: 3px; background: transparent; color: var(--ink); cursor: pointer; font-weight: 800; }
+.quest-confirm-actions button:last-child { background: var(--ink); color: white; }
+.quest-confirm-actions button:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
+@keyframes confirm-fade-in { from { opacity: 0; } }
+@keyframes confirm-rise-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
 .quest-picker-empty { width: min(520px, calc(100% - 40px)); margin: 0 auto; padding: 35px; border: 1px solid var(--ink); background: white; text-align: center; box-shadow: 8px 8px 0 var(--lime); }
 .quest-picker-empty h2 { margin-top: 0; }
 
