@@ -135,6 +135,46 @@ footer > a:last-child { justify-self: end; }
   footer > a, footer > a:last-child { justify-self: center; }
 }
 
+/* Quest selection */
+.choose-quest-page { min-height: 100vh; padding-bottom: 70px; background: var(--paper); }
+.quest-picker-header { height: 82px; max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.quest-picker-header > span { font-family: var(--font-geist-mono); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.quest-picker-intro { max-width: 1240px; margin: 0 auto; padding: 70px 32px 48px; }
+.quest-picker-intro h1 { margin: 0; font-size: clamp(55px, 6.5vw, 86px); line-height: .93; letter-spacing: -.07em; }
+.quest-picker-intro h1 em { color: var(--coral); font-family: Georgia, serif; font-weight: 400; }
+.quest-picker-intro > p:last-child { max-width: 550px; margin: 26px 0 0; color: #62665e; font-size: 17px; line-height: 1.6; }
+.quest-picker-grid { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.picker-card { min-height: 420px; padding: 25px; display: flex; flex-direction: column; border: 1px solid var(--ink); border-radius: 4px; }
+.picker-card.coral { background: #ff8a74; }
+.picker-card.violet { background: #b9a7ff; }
+.picker-card.lime { background: var(--lime); }
+.picker-card-top { display: flex; justify-content: space-between; font-family: var(--font-geist-mono); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.picker-symbol { margin-top: 55px; font-family: var(--font-geist-mono); font-size: 42px; font-weight: 700; }
+.picker-card h2 { margin: 18px 0 12px; font-size: 30px; line-height: 1.05; letter-spacing: -.05em; }
+.picker-card > p { margin: 0; font-size: 13px; line-height: 1.55; }
+.picker-details { margin-top: auto; padding-top: 28px; display: flex; flex-wrap: wrap; gap: 7px; }
+.picker-details span { padding: 7px 9px; border: 1px solid rgba(23,26,22,.45); border-radius: 999px; font-family: var(--font-geist-mono); font-size: 8px; font-weight: 800; text-transform: uppercase; }
+.picker-card button { margin-top: 20px; padding: 15px 0 0; border: 0; border-top: 1px solid rgba(23,26,22,.5); background: transparent; color: var(--ink); cursor: pointer; font-size: 13px; font-weight: 800; text-align: left; }
+.picker-card button:disabled { cursor: default; opacity: .62; }
+.quest-picker-status, .quest-picker-message, .quest-picker-note { max-width: 1176px; margin: 0 auto; }
+.quest-picker-status { padding: 40px 0; font-size: 17px; }
+.quest-picker-message { min-height: 22px; padding: 22px 32px 0; color: #3a4f20; font-weight: 700; text-align: center; }
+.quest-picker-note { padding: 14px 32px 0; color: #777b73; font-size: 11px; text-align: center; }
+.quest-picker-empty { width: min(520px, calc(100% - 40px)); margin: 0 auto; padding: 35px; border: 1px solid var(--ink); background: white; text-align: center; box-shadow: 8px 8px 0 var(--lime); }
+.quest-picker-empty h2 { margin-top: 0; }
+
+@media (max-width: 850px) {
+  .quest-picker-grid { grid-template-columns: 1fr; }
+  .picker-card { min-height: 360px; }
+}
+
+@media (max-width: 560px) {
+  .quest-picker-header { height: 72px; padding-inline: 20px; }
+  .quest-picker-intro { padding: 52px 20px 38px; }
+  .quest-picker-intro h1 { font-size: 52px; }
+  .quest-picker-grid { padding-inline: 20px; }
+}
+
 /* Account and onboarding */
 .auth-page { min-height: 100vh; background: var(--paper); }
 .auth-header { height: 82px; max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }

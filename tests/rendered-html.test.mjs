@@ -40,3 +40,11 @@ test("server-renders the account screens", async () => {
   const onboardingHtml = await onboardingResponse.text();
   assert.match(onboardingHtml, /Opening your QuestLoop profile/);
 });
+
+test("server-renders the quest picker", async () => {
+  const response = await render("/quests");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /What will you/);
+  assert.match(html, /Loading the first quests/);
+});

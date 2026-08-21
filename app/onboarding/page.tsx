@@ -127,7 +127,7 @@ export default function OnboardingPage() {
         ) : (
           <div className="onboarding-success">
             <div><span>✓</span><strong>@{handle}</strong><small>Public profile reserved</small></div>
-            <button className="auth-submit" type="button" disabled>Choose a quest — coming next</button>
+            <Link className="auth-submit link-button" href="/quests">Choose my first quest →</Link>
           </div>
         )}
         <p className={`auth-message ${saved ? "success" : ""}`} aria-live="polite">{message}</p>
