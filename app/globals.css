@@ -177,10 +177,13 @@ footer > a:last-child { justify-self: end; }
 .settings-intro > p:last-child { max-width: 500px; margin-top: 25px; color: #666a62; font-size: 17px; line-height: 1.6; }
 .settings-card { padding: 32px; border: 1px solid var(--ink); background: white; box-shadow: 9px 9px 0 var(--lime); }
 .settings-avatar { width: 72px; height: 72px; margin-bottom: 12px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--violet); font-size: 28px; font-weight: 800; }
+.settings-avatar img, .public-avatar img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover; }
 .settings-card > strong { color: #6f736b; }
 .settings-card form { margin-top: 25px; }
 .settings-card label { display: block; margin: 16px 0 8px; font-family: var(--font-geist-mono); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .settings-card input, .settings-card textarea { width: 100%; padding: 13px 14px; border: 1px solid #b8bbb3; border-radius: 3px; outline: 0; }
+.settings-card .avatar-file-input { padding: 10px; font-size: 11px; }
+.avatar-help { margin: 7px 0 0; color: #858980; font-size: 10px; }
 .settings-card textarea { min-height: 110px; resize: vertical; }
 .settings-card input:focus, .settings-card textarea:focus { border-color: var(--ink); box-shadow: 0 0 0 2px rgba(200,241,105,.6); }
 .settings-bio-count { margin-top: 6px; color: #888c84; font-family: var(--font-geist-mono); font-size: 8px; text-align: right; }

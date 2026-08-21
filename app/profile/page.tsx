@@ -38,6 +38,7 @@ export default function PublicProfilePage() {
   const [proofs, setProofs] = useState<PublicProof[]>([]);
   const [questNames, setQuestNames] = useState<Record<string, string>>({});
   const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
+  const [avatarImageUrl, setAvatarImageUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [viewerId, setViewerId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
@@ -79,6 +80,11 @@ export default function PublicProfilePage() {
         setMessage("That QuestLoop profile does not exist.");
         setLoading(false);
         return;
+      }
+
+      if (profileData.avatar_url) {
+        const { data } = await supabase.storage.from("proof-images").createSignedUrl(profileData.avatar_url, 3600);
+        if (active) setAvatarImageUrl(data?.signedUrl ?? "");
       }
 
       const [{ data: memberships, error: membershipError }, { data: proofData, error: proofError }] = await Promise.all([
@@ -186,7 +192,9 @@ export default function PublicProfilePage() {
       </header>
 
       <section className="public-profile-header">
-        <div className="public-avatar">{(profile.display_name || profile.handle).charAt(0).toUpperCase()}</div>
+        <div className="public-avatar">
+          {avatarImageUrl ? <img src={avatarImageUrl} alt={profile.display_name || profile.handle} /> : (profile.display_name || profile.handle).charAt(0).toUpperCase()}
+        </div>
         <div className="public-identity">
           <h1>{profile.display_name || profile.handle}</h1>
           <strong>@{profile.handle}</strong>
