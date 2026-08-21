@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import AccountMenu from "../../components/account-menu";
+import ThemeToggle from "../../components/theme-toggle";
 
 type Quest = {
   id: string;
@@ -184,7 +185,7 @@ export default function QuestsPage() {
           <span className="brand-mark" aria-hidden="true">Q</span>
           <span>QuestLoop</span>
         </a>
-        <div className="quest-picker-account"><span>Step 3 of 3</span><AccountMenu /></div>
+        <div className="quest-picker-account"><span>Step 3 of 3</span><AccountMenu /><ThemeToggle /></div>
       </header>
 
       <section className="quest-picker-intro">

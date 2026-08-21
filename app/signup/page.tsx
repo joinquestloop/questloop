@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 import { FormEvent, useEffect, useState } from "react";
+import ThemeToggle from "../../components/theme-toggle";
 
 type Mode = "signup" | "signin";
 
@@ -101,7 +102,7 @@ export default function SignupPage() {
           <span className="brand-mark" aria-hidden="true">Q</span>
           <span>QuestLoop</span>
         </a>
-        <a className="auth-back" href="/">← Back to home</a>
+        <div className="auth-header-actions"><a className="auth-back" href="/">← Back to home</a><ThemeToggle /></div>
       </header>
 
       <section className="auth-layout">

@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import ThemeToggle from "../../components/theme-toggle";
 
 export default function SettingsPage() {
   const [userId, setUserId] = useState<string | null>(null);
@@ -158,7 +159,7 @@ export default function SettingsPage() {
     <main className="settings-page">
       <header className="dashboard-header">
         <a className="brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
-        <nav><a href="/quest">My quest</a><a href="/community">Community</a><a href="/profile">Public profile</a></nav>
+        <nav><a href="/quest">My quest</a><a href="/community">Community</a><a href="/profile">Public profile</a><ThemeToggle /></nav>
       </header>
 
       <section className="settings-layout">

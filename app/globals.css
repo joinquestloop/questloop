@@ -737,3 +737,117 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .account-menu > a > span:last-child { display: none; }
   .account-avatar { width: 27px; height: 27px; }
 }
+
+/* QuestLoop social navigation and appearance modes */
+:root {
+  --surface: #f7f7f2;
+  --surface-raised: #ffffff;
+  --surface-soft: #edeee8;
+  --text: #171a16;
+  --text-muted: #62675e;
+  --nav-bg: rgba(252, 252, 249, .88);
+  --nav-border: rgba(23, 26, 22, .1);
+  --card-border: rgba(23, 26, 22, .13);
+  --shadow-soft: 0 14px 40px rgba(23, 26, 22, .08);
+}
+
+[data-theme="dark"] {
+  --ink: #f2f4ed;
+  --paper: #0d100d;
+  --line: rgba(255,255,255,.11);
+  --surface: #0d100d;
+  --surface-raised: #161a16;
+  --surface-soft: #20251f;
+  --text: #f2f4ed;
+  --text-muted: #a5ada2;
+  --nav-bg: rgba(13, 16, 13, .88);
+  --nav-border: rgba(255,255,255,.09);
+  --card-border: rgba(255,255,255,.1);
+  --shadow-soft: 0 18px 48px rgba(0,0,0,.28);
+}
+
+html, body { background: var(--surface); color: var(--text); }
+body, body * { transition-property: background-color, border-color, color, box-shadow; transition-duration: .18s; transition-timing-function: ease; }
+
+.site-header, .dashboard-header, .quest-picker-header, .auth-header {
+  height: 76px;
+  padding-inline: max(24px, calc((100vw - 1240px) / 2));
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  box-shadow: 0 1px 0 rgba(255,255,255,.4), 0 12px 34px rgba(23,26,22,.045);
+  backdrop-filter: blur(24px) saturate(1.5);
+}
+[data-theme="dark"] .site-header, [data-theme="dark"] .dashboard-header, [data-theme="dark"] .quest-picker-header, [data-theme="dark"] .auth-header {
+  box-shadow: 0 1px 0 rgba(255,255,255,.025), 0 14px 38px rgba(0,0,0,.3);
+}
+.brand { gap: 11px; color: var(--text); font-size: 18px; font-weight: 820; letter-spacing: -.045em; }
+.brand-mark { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.12); background: #171a16; color: var(--lime); box-shadow: 0 7px 18px rgba(23,26,22,.2); transform: none; }
+.site-header nav, .dashboard-header nav, .auth-header-actions, .quest-picker-account { gap: 4px; }
+.site-header nav, .dashboard-header nav { padding: 4px; border: 1px solid var(--nav-border); border-radius: 16px; background: color-mix(in srgb, var(--surface-raised) 72%, transparent); box-shadow: 0 3px 12px rgba(23,26,22,.04); }
+.site-header nav > a:not(.nav-cta), .dashboard-header nav > a, .auth-back {
+  padding: 9px 12px;
+  color: var(--text-muted);
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 720;
+}
+.site-header nav > a:not(.nav-cta):hover, .dashboard-header nav > a:hover, .auth-back:hover { background: var(--surface-soft); color: var(--text); }
+.site-header .nav-cta, .dashboard-header .nav-cta { margin-left: 2px; padding: 9px 15px; border-radius: 11px; background: var(--text); color: var(--surface); box-shadow: none; }
+.site-header .nav-cta:hover, .dashboard-header .nav-cta:hover { background: var(--coral); color: #171a16; }
+.auth-header-actions { display: flex; align-items: center; }
+.onboarding-theme { position: fixed; z-index: 5; top: 18px; right: 18px; }
+
+.theme-toggle { height: 38px; margin-left: 5px; padding: 3px; display: inline-flex; align-items: center; gap: 2px; border: 1px solid var(--nav-border); border-radius: 12px; background: var(--surface-soft); }
+.theme-toggle button { height: 30px; min-width: 32px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); cursor: pointer; font-size: 11px; font-weight: 720; }
+.theme-toggle button:hover { color: var(--text); }
+.theme-toggle button.active { background: var(--surface-raised); color: var(--text); box-shadow: 0 2px 8px rgba(23,26,22,.12); }
+.theme-toggle button span:first-child { font-size: 14px; line-height: 1; }
+.theme-label { display: none; }
+.account-menu { padding-left: 4px; border-left: 1px solid var(--nav-border); }
+.account-menu > a { min-height: 36px; padding: 3px 9px 3px 3px; background: transparent; color: var(--text); border-color: transparent; }
+.account-menu button { color: var(--text-muted); }
+.account-menu button:hover { background: var(--surface-soft); color: var(--coral); }
+
+[data-theme="dark"] :is(.choose-quest-page, .quest-dashboard, .settings-page, .public-profile-page, .community-page, .auth-page) {
+  background: radial-gradient(circle at 8% 10%, rgba(200,241,105,.075), transparent 24%), radial-gradient(circle at 92% 24%, rgba(168,145,255,.07), transparent 22%), var(--surface);
+}
+[data-theme="dark"] .onboarding-page { background: radial-gradient(circle at 18% 18%, rgba(200,241,105,.12), transparent 28%), radial-gradient(circle at 82% 78%, rgba(168,145,255,.12), transparent 26%), #090b09; }
+[data-theme="dark"] :is(.how-grid article, .public-profile-header, .public-proof-list, .public-active-quests, .proof-panel, .settings-card, .auth-card, .onboarding-card, .quest-picker-empty, .empty-dashboard, .profile-empty, .feed-proof-card) {
+  background: var(--surface-raised);
+  color: var(--text);
+  border-color: var(--card-border);
+  box-shadow: var(--shadow-soft);
+}
+[data-theme="dark"] :is(.hero-lede, .how-grid p, .section-heading > p, .feedback-copy > p:last-child, .auth-story > p:not(.eyebrow), .auth-card-copy p, .onboarding-card > p, .public-identity p, .settings-intro > p, .dashboard-hero > div > p:last-child, .community-intro > p:last-child) { color: var(--text-muted); }
+[data-theme="dark"] :is(.feedback-section, .picker-coming-soon) { background: var(--surface-soft); border-color: var(--line); }
+[data-theme="dark"] :is(.feedback-form, .quest-confirm-dialog, .submitted-proof, .profile-proof-card, .public-active-quests article) { background: var(--surface-raised); color: var(--text); border-color: var(--card-border); }
+[data-theme="dark"] :is(.auth-form input, .handle-input, .settings-card input, .settings-card textarea, .proof-form textarea, .proof-form input, .proof-form select, .feedback-form textarea, .feedback-form input) { background: #20251f; color: var(--text); border-color: #3d443b; }
+[data-theme="dark"] :is(.auth-tabs, .dashboard-stats, .public-profile-stats, .community-momentum) { background: var(--surface-soft); border-color: var(--card-border); }
+[data-theme="dark"] .auth-tabs button.active { background: var(--surface-raised); color: var(--text); }
+[data-theme="dark"] .share-profile-button { background: #34231f; color: #ff9a87; }
+[data-theme="dark"] .orbit { border-color: rgba(255,255,255,.14); }
+[data-theme="dark"] .proof-chip { background: var(--surface-raised); color: var(--text); border-color: var(--card-border); box-shadow: 4px 4px 0 rgba(200,241,105,.65); }
+[data-theme="dark"] .text-link { border-color: var(--text); }
+
+@media (min-width: 1100px) {
+  .theme-toggle button { min-width: auto; }
+  .theme-label { display: inline; }
+}
+
+@media (max-width: 850px) {
+  .site-header, .dashboard-header, .quest-picker-header, .auth-header { padding-inline: 18px; }
+  .dashboard-header nav > a { display: none; }
+  .site-header nav { border: 0; background: transparent; box-shadow: none; }
+  .account-menu { border-left: 0; }
+}
+
+@media (max-width: 560px) {
+  .site-header, .dashboard-header, .quest-picker-header, .auth-header { height: 68px; padding-inline: 14px; background: var(--nav-bg); }
+  .brand { font-size: 16px; }
+  .brand-mark { width: 31px; height: 31px; }
+  .site-header nav > a:not(.nav-cta), .auth-back { display: none; }
+  .site-header .nav-cta { padding: 9px 12px; }
+  .theme-toggle { margin-left: 2px; }
+  .theme-toggle button { padding-inline: 6px; min-width: 28px; }
+  .quest-picker-account > span { display: none; }
+}

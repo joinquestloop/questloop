@@ -1,4 +1,5 @@
 import FeedbackForm from "../components/feedback-form";
+import ThemeToggle from "../components/theme-toggle";
 
 const quests = [
   {
@@ -41,6 +42,7 @@ export default function Home() {
           <a href="#community-preview">Community</a>
           <a href="/signup?mode=signin">Sign in</a>
           <a className="nav-cta" href="/signup">Sign up</a>
+          <ThemeToggle />
         </nav>
       </header>
 

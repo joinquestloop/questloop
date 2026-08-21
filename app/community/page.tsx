@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import AccountMenu from "../../components/account-menu";
+import ThemeToggle from "../../components/theme-toggle";
 
 type FeedProof = {
   id: string;
@@ -160,7 +161,7 @@ export default function CommunityPage() {
     <main className="community-page">
       <header className="dashboard-header">
         <a className="brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
-        <nav><a href="/quest">My quest</a><a href="/quests">Discover quests</a><AccountMenu /></nav>
+        <nav><a href="/quest">My quest</a><a href="/quests">Discover quests</a><AccountMenu /><ThemeToggle /></nav>
       </header>
 
       <section className="community-intro">

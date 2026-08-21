@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import AccountMenu from "../../components/account-menu";
+import ThemeToggle from "../../components/theme-toggle";
 
 type Profile = {
   id: string;
@@ -188,6 +189,7 @@ export default function PublicProfilePage() {
               <a className="nav-cta" href="/signup">Sign up</a>
             </>
           )}
+          <ThemeToggle />
         </nav>
       </header>
 

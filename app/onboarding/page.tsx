@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 import { FormEvent, useEffect, useState } from "react";
+import ThemeToggle from "../../components/theme-toggle";
 import type { User } from "@supabase/supabase-js";
 
 const HANDLE_PATTERN = /^[a-z0-9_]{3,20}$/;
@@ -99,6 +100,7 @@ export default function OnboardingPage() {
   if (!user) {
     return (
       <main className="onboarding-page">
+        <div className="onboarding-theme"><ThemeToggle /></div>
         <section className="onboarding-card compact">
           <span className="step-badge">Email confirmation needed</span>
           <h1>Confirm your email first.</h1>
@@ -111,6 +113,7 @@ export default function OnboardingPage() {
 
   return (
     <main className="onboarding-page">
+      <div className="onboarding-theme"><ThemeToggle /></div>
       <section className="onboarding-card">
         <a className="brand onboarding-brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
         <span className="step-badge">Step 2 of 3</span>
