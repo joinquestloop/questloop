@@ -12,6 +12,7 @@ export default function OnboardingPage() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -20,10 +21,23 @@ export default function OnboardingPage() {
     import("../../lib/supabase").then(({ supabase }) => {
       if (!active) return;
 
-      supabase.auth.getUser().then(({ data }) => {
+      supabase.auth.getUser().then(async ({ data }) => {
         if (!active) return;
         setUser(data.user);
-        setHandle((data.user?.user_metadata.handle as string | undefined) ?? "");
+
+        if (data.user) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("handle")
+            .eq("id", data.user.id)
+            .maybeSingle();
+
+          if (!active) return;
+          const storedHandle = profile?.handle ?? "";
+          setHandle(storedHandle);
+          setSaved(Boolean(storedHandle));
+        }
+
         setLoading(false);
       });
 
@@ -50,17 +64,31 @@ export default function OnboardingPage() {
       return;
     }
 
-    setMessage("Saving your handle…");
-    const { supabase } = await import("../../lib/supabase");
-    const { error } = await supabase.auth.updateUser({ data: { handle: normalized } });
-
-    if (error) {
-      setMessage(error.message);
+    if (!user) {
+      setMessage("Please sign in again before saving your handle.");
       return;
     }
 
+    setMessage("Saving your handle…");
+    setSaving(true);
+    const { supabase } = await import("../../lib/supabase");
+    const { error } = await supabase
+      .from("profiles")
+      .update({ handle: normalized, updated_at: new Date().toISOString() })
+      .eq("id", user.id)
+      .select("handle")
+      .single();
+
+    if (error) {
+      setSaving(false);
+      setMessage(error.code === "23505" ? "That handle is already taken. Try another one." : error.message);
+      return;
+    }
+
+    await supabase.auth.updateUser({ data: { handle: normalized } });
     setHandle(normalized);
     setSaved(true);
+    setSaving(false);
     setMessage("Your QuestLoop profile is ready.");
   }
 
@@ -94,7 +122,7 @@ export default function OnboardingPage() {
             <label htmlFor="handle">QuestLoop handle</label>
             <div className="handle-input"><span>@</span><input id="handle" value={handle} onChange={(event) => setHandle(event.target.value)} placeholder="souvik" autoComplete="username" required /></div>
             <p>questloop.app/@{handle || "yourhandle"}</p>
-            <button className="auth-submit" type="submit">Save my handle →</button>
+            <button className="auth-submit" type="submit" disabled={saving}>{saving ? "Saving…" : "Save my handle →"}</button>
           </form>
         ) : (
           <div className="onboarding-success">
