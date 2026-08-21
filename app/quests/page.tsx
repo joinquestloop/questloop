@@ -134,8 +134,17 @@ export default function QuestsPage() {
                 <h2>{quest.title}</h2>
                 <p>{quest.description}</p>
                 <div className="picker-details"><span>{quest.proof_rhythm}</span><span>Start at Day 1</span></div>
-                <button type="button" onClick={() => joinQuest(quest)} disabled={joiningId === quest.id}>
+                <span className="picker-action-text" aria-hidden="true">
                   {joined ? "Open quest →" : joiningId === quest.id ? "Joining…" : "Choose this quest →"}
+                </span>
+                <button
+                  className="picker-card-action"
+                  type="button"
+                  onClick={() => joinQuest(quest)}
+                  disabled={joiningId === quest.id}
+                  aria-label={joined ? `Open ${quest.title}` : `Choose ${quest.title}`}
+                >
+                  <span className="visually-hidden">{joined ? `Open ${quest.title}` : `Choose ${quest.title}`}</span>
                 </button>
               </article>
             );
