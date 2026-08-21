@@ -37,6 +37,7 @@ export default function PublicProfilePage() {
   const [questNames, setQuestNames] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [shareMessage, setShareMessage] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -131,6 +132,18 @@ export default function PublicProfilePage() {
 
   const totalCheers = proofs.reduce((sum, proof) => sum + proof.cheerCount, 0);
 
+  async function shareProfile() {
+    if (!profile) return;
+    const url = `${window.location.origin}/profile?handle=${profile.handle}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareMessage("Link copied!");
+    } catch {
+      setShareMessage("Copy the profile link shown below.");
+    }
+  }
+
   if (loading) return <main className="public-profile-page profile-loading">Opening public profile…</main>;
 
   if (!profile) {
@@ -152,7 +165,11 @@ export default function PublicProfilePage() {
           <p>{profile.bio || "Building progress in public, one quest at a time."}</p>
           <small>Member since {new Date(profile.created_at).getFullYear()}</small>
         </div>
-        <button type="button" className="share-profile-button" onClick={() => navigator.clipboard.writeText(`${window.location.origin}/profile?handle=${profile.handle}`)}>Share profile</button>
+        <div className="share-profile-area">
+          <button type="button" className="share-profile-button" onClick={shareProfile}>{shareMessage === "Link copied!" ? "✓ Link copied!" : "Share profile"}</button>
+          <small aria-live="polite">{shareMessage}</small>
+          <a href={`/profile?handle=${profile.handle}`}>questloop.app/profile?handle={profile.handle}</a>
+        </div>
       </section>
 
       <section className="public-profile-stats">
