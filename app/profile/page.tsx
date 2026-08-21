@@ -152,7 +152,7 @@ export default function PublicProfilePage() {
           <p>{profile.bio || "Building progress in public, one quest at a time."}</p>
           <small>Member since {new Date(profile.created_at).getFullYear()}</small>
         </div>
-        <button type="button" className="share-profile-button" onClick={() => navigator.clipboard.writeText(window.location.href)}>Share profile</button>
+        <button type="button" className="share-profile-button" onClick={() => navigator.clipboard.writeText(`${window.location.origin}/profile?handle=${profile.handle}`)}>Share profile</button>
       </section>
 
       <section className="public-profile-stats">
