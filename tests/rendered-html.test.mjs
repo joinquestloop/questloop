@@ -48,3 +48,10 @@ test("server-renders the quest picker", async () => {
   assert.match(html, /What will you/);
   assert.match(html, /Loading the first quests/);
 });
+
+test("server-renders the quest dashboard", async () => {
+  const response = await render("/quest");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Opening your quest/);
+});

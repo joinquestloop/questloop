@@ -135,6 +135,60 @@ footer > a:last-child { justify-self: end; }
   footer > a, footer > a:last-child { justify-self: center; }
 }
 
+/* Quest dashboard */
+.quest-dashboard { min-height: 100vh; background: var(--paper); }
+.loading-screen { display: grid; place-items: center; font-weight: 700; }
+.empty-dashboard { width: min(540px, calc(100% - 40px)); margin: 80px auto; padding: 42px; border: 1px solid var(--ink); background: white; box-shadow: 9px 9px 0 var(--lime); text-align: center; }
+.dashboard-header { height: 82px; max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.dashboard-header > a:last-child { font-size: 13px; font-weight: 700; }
+.dashboard-hero { max-width: 1240px; margin: 0 auto; padding: 66px 32px 48px; display: grid; grid-template-columns: 1fr 230px; gap: 60px; align-items: center; }
+.dashboard-hero h1 { margin: 0; font-size: clamp(52px, 6.3vw, 84px); line-height: .94; letter-spacing: -.065em; }
+.dashboard-hero > div > p:last-child { max-width: 600px; margin: 23px 0 0; color: #656960; font-size: 17px; line-height: 1.6; }
+.day-orbit { width: 210px; height: 210px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--coral); box-shadow: 8px 8px 0 var(--ink); }
+.day-orbit small { font-family: var(--font-geist-mono); font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.day-orbit strong { margin: 8px 0 3px; font-size: 35px; letter-spacing: -.05em; }
+.day-orbit span { font-size: 12px; }
+.dashboard-stats { max-width: 1176px; margin: 0 auto 24px; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--ink); background: white; }
+.dashboard-stats div { padding: 21px; display: flex; flex-direction: column; border-right: 1px solid var(--line); }
+.dashboard-stats div:last-child { border-right: 0; }
+.dashboard-stats strong { font-size: 22px; letter-spacing: -.04em; }
+.dashboard-stats span { margin-top: 3px; color: #777b73; font-family: var(--font-geist-mono); font-size: 9px; text-transform: uppercase; }
+.dashboard-grid { max-width: 1176px; margin: 0 auto; padding-bottom: 80px; display: grid; grid-template-columns: 1fr 360px; gap: 22px; }
+.proof-panel, .quest-rules-panel { padding: 30px; border: 1px solid var(--ink); background: white; }
+.proof-panel { box-shadow: 7px 7px 0 var(--lime); }
+.panel-kicker { margin: 0 0 9px; color: var(--coral); font-family: var(--font-geist-mono); font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.proof-panel h2, .quest-rules-panel h2 { margin: 0 0 23px; font-size: 29px; letter-spacing: -.045em; }
+.proof-form label { display: block; margin: 17px 0 8px; font-family: var(--font-geist-mono); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.proof-form label span { color: #8b8f87; font-weight: 500; }
+.proof-form textarea, .proof-form input, .proof-form select { width: 100%; padding: 13px 14px; border: 1px solid #b8bbb3; border-radius: 3px; background: white; outline: 0; }
+.proof-form textarea { min-height: 130px; resize: vertical; }
+.proof-form textarea:focus, .proof-form input:focus, .proof-form select:focus { border-color: var(--ink); box-shadow: 0 0 0 2px rgba(200,241,105,.6); }
+.dashboard-message { min-height: 20px; margin: 16px 0 0; color: #3a5e20; font-size: 12px; font-weight: 700; }
+.submitted-proof { padding: 22px; border: 1px solid var(--ink); background: #f6ffe4; }
+.submitted-proof > span { color: #49721d; font-family: var(--font-geist-mono); font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.submitted-proof p { font-size: 16px; line-height: 1.6; }
+.submitted-proof a { color: #c73e28; font-size: 12px; font-weight: 800; }
+.quest-rules-panel { background: var(--ink); color: white; }
+.quest-rules-panel ol { margin: 0; padding: 0; list-style: none; }
+.quest-rules-panel li { padding: 17px 0; display: flex; gap: 13px; border-top: 1px solid #3f433d; color: #d3d6cf; font-size: 13px; line-height: 1.4; }
+.quest-rules-panel li span { color: var(--lime); font-family: var(--font-geist-mono); font-size: 9px; }
+
+@media (max-width: 850px) {
+  .dashboard-grid { padding-inline: 20px; grid-template-columns: 1fr; }
+  .dashboard-stats { margin-inline: 20px; grid-template-columns: 1fr 1fr; }
+  .dashboard-stats div:nth-child(2) { border-right: 0; }
+  .dashboard-stats div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+}
+
+@media (max-width: 560px) {
+  .dashboard-header { height: 72px; padding-inline: 20px; }
+  .dashboard-hero { padding: 48px 20px 38px; grid-template-columns: 1fr; }
+  .dashboard-hero h1 { font-size: 50px; }
+  .day-orbit { width: 165px; height: 165px; }
+  .dashboard-stats div { padding: 16px; }
+  .proof-panel, .quest-rules-panel { padding: 23px; }
+}
+
 /* Quest selection */
 .choose-quest-page { min-height: 100vh; padding-bottom: 70px; background: var(--paper); }
 .quest-picker-header { height: 82px; max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }

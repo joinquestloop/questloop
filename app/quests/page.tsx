@@ -66,6 +66,11 @@ export default function QuestsPage() {
   }, []);
 
   async function joinQuest(quest: Quest) {
+    if (joinedQuestIds.has(quest.id)) {
+      window.location.assign("/quest");
+      return;
+    }
+
     if (!userId) {
       setMessage("Sign in before joining a quest.");
       return;
@@ -128,8 +133,8 @@ export default function QuestsPage() {
                 <h2>{quest.title}</h2>
                 <p>{quest.description}</p>
                 <div className="picker-details"><span>{quest.proof_rhythm}</span><span>Start at Day 1</span></div>
-                <button type="button" onClick={() => joinQuest(quest)} disabled={joined || joiningId === quest.id}>
-                  {joined ? "✓ Quest joined" : joiningId === quest.id ? "Joining…" : "Choose this quest →"}
+                <button type="button" onClick={() => joinQuest(quest)} disabled={joiningId === quest.id}>
+                  {joined ? "Open quest →" : joiningId === quest.id ? "Joining…" : "Choose this quest →"}
                 </button>
               </article>
             );
