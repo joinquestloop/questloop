@@ -21,6 +21,7 @@ export default function CommunityPage() {
   const [quest, setQuest] = useState<Quest | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [handles, setHandles] = useState<Record<string, string>>({});
+  const [profileHandles, setProfileHandles] = useState<Record<string, string>>({});
   const [cheerCounts, setCheerCounts] = useState<Record<string, number>>({});
   const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
   const [myCheers, setMyCheers] = useState<Set<string>>(new Set());
@@ -87,6 +88,7 @@ export default function CommunityPage() {
 
         if (!active) return;
         setHandles(Object.fromEntries((profiles ?? []).map((profile) => [profile.id, profile.display_name || `@${profile.handle || "member"}`])));
+        setProfileHandles(Object.fromEntries((profiles ?? []).map((profile) => [profile.id, profile.handle])));
 
         const counts: Record<string, number> = {};
         for (const cheer of cheers ?? []) {
@@ -177,6 +179,9 @@ export default function CommunityPage() {
             const hasCheered = myCheers.has(proof.id);
             return (
               <article className="feed-proof-card" key={proof.id} style={{ animationDelay: `${Math.min(index, 8) * 55}ms` }}>
+                {profileHandles[proof.user_id] && (
+                  <a className="feed-profile-link" href={`/profile?handle=${profileHandles[proof.user_id]}`} aria-label={`Open ${handles[proof.user_id] || "member"}'s profile`} />
+                )}
                 <div className="proof-author-avatar" aria-hidden="true">{(handles[proof.user_id] || "M").replace("@", "").charAt(0).toUpperCase()}</div>
                 <div className="feed-proof-content">
                   <div className="feed-proof-meta">
@@ -197,6 +202,7 @@ export default function CommunityPage() {
                       </button>
                     )}
                     <span>{cheerCounts[proof.id] ?? 0} cheers</span>
+                    <span className="feed-open-profile">View profile ↗</span>
                   </div>
                 </div>
               </article>
