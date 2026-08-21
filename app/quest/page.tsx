@@ -157,7 +157,7 @@ export default function QuestDashboardPage() {
     <main className="quest-dashboard">
       <header className="dashboard-header">
         <a className="brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
-        <nav><a href="/community">Community</a><a href="/quests">Discover quests</a></nav>
+        <nav><a href="/profile">My profile</a><a href="/community">Community</a><a href="/quests">Discover quests</a></nav>
       </header>
 
       <section className="dashboard-hero">

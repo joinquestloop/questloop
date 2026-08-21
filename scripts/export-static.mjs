@@ -10,7 +10,7 @@ await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 await cp(client, output, { recursive: true });
 
-for (const route of ["/", "/signup", "/onboarding", "/quests", "/quest", "/community"]) {
+for (const route of ["/", "/signup", "/onboarding", "/quests", "/quest", "/community", "/profile"]) {
   const response = await worker.fetch(
     new Request(`https://questloop.app${route}`, { headers: { accept: "text/html" } }),
     { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },

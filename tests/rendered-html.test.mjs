@@ -63,3 +63,10 @@ test("server-renders the community feed", async () => {
   assert.match(html, /Community/);
   assert.match(html, /Loading community progress/);
 });
+
+test("server-renders public profiles", async () => {
+  const response = await render("/profile");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Opening public profile/);
+});
