@@ -22,7 +22,9 @@ publishable key. Never put a secret key, service-role key, or database password
 in a `NEXT_PUBLIC_` variable.
 
 The shared browser client is available from `lib/supabase.ts` for authentication
-and public app data.
+and public app data. The production project's browser-safe URL and publishable
+key are included as build fallbacks because Cloudflare's static render step does
+not receive Workers Build variables. Privileged keys must never be added there.
 
 ## Production build
 
