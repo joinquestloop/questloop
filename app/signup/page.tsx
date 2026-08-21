@@ -65,7 +65,7 @@ export default function SignupPage() {
         return;
       }
 
-      const { error } = await withTimeout(
+      const { data, error } = await withTimeout(
         supabase.auth.signInWithPassword({
           email: email.trim(),
           password,
@@ -73,7 +73,21 @@ export default function SignupPage() {
       );
 
       if (error) throw error;
-      window.location.assign("/onboarding");
+
+      const [{ data: profile }, { data: membership }] = await Promise.all([
+        supabase.from("profiles").select("handle").eq("id", data.user.id).maybeSingle(),
+        supabase
+          .from("quest_memberships")
+          .select("id")
+          .eq("user_id", data.user.id)
+          .eq("status", "active")
+          .limit(1)
+          .maybeSingle(),
+      ]);
+
+      if (membership) window.location.assign("/quest");
+      else if (profile?.handle) window.location.assign("/quests");
+      else window.location.assign("/onboarding");
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "Account request failed. Please try again.");
