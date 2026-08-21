@@ -76,22 +76,21 @@ export default function CommunityPage() {
       if (loadedProofs.length) {
         const userIds = [...new Set(loadedProofs.map((proof) => proof.user_id))];
         const proofIds = loadedProofs.map((proof) => proof.id);
-        const [{ data: profiles }, { data: cheers }] = await Promise.all([
+        const [{ data: profiles }, { data: cheers }, { data: ownCheers }] = await Promise.all([
           supabase.from("profiles").select("id, handle, display_name").in("id", userIds),
           supabase.from("proof_cheers").select("proof_id, user_id").in("proof_id", proofIds),
+          supabase.from("proof_cheers").select("proof_id").eq("user_id", authData.user.id).in("proof_id", proofIds),
         ]);
 
         if (!active) return;
         setHandles(Object.fromEntries((profiles ?? []).map((profile) => [profile.id, profile.display_name || `@${profile.handle || "member"}`])));
 
         const counts: Record<string, number> = {};
-        const mine = new Set<string>();
         for (const cheer of cheers ?? []) {
           counts[cheer.proof_id] = (counts[cheer.proof_id] ?? 0) + 1;
-          if (cheer.user_id === authData.user.id) mine.add(cheer.proof_id);
         }
         setCheerCounts(counts);
-        setMyCheers(mine);
+        setMyCheers(new Set((ownCheers ?? []).map((cheer) => cheer.proof_id)));
       }
 
       setLoading(false);
@@ -173,9 +172,13 @@ export default function CommunityPage() {
                   <p>{proof.progress_text}</p>
                   {proof.proof_url && <a href={proof.proof_url} target="_blank" rel="noreferrer">View proof ↗</a>}
                   <div className="feed-proof-actions">
-                    <button type="button" className={hasCheered ? "cheered" : ""} onClick={() => toggleCheer(proof)} disabled={isMine || updatingProofId === proof.id}>
-                      {isMine ? "Your proof" : hasCheered ? "♥ Cheered" : "♡ Cheer"}
-                    </button>
+                    {isMine ? (
+                      <span className="own-proof-label">✓ Your proof</span>
+                    ) : (
+                      <button type="button" className={hasCheered ? "cheered" : ""} onClick={() => toggleCheer(proof)} disabled={updatingProofId === proof.id}>
+                        {hasCheered ? "♥ Cheered" : "♡ Cheer"}
+                      </button>
+                    )}
                     <span>{cheerCounts[proof.id] ?? 0} cheers</span>
                   </div>
                 </div>
