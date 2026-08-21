@@ -55,3 +55,11 @@ test("server-renders the quest dashboard", async () => {
   const html = await response.text();
   assert.match(html, /Opening your quest/);
 });
+
+test("server-renders the community feed", async () => {
+  const response = await render("/community");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Community/);
+  assert.match(html, /Loading community progress/);
+});
