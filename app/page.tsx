@@ -1,3 +1,5 @@
+import FeedbackForm from "../components/feedback-form";
+
 const quests = [
   {
     number: "01",
@@ -35,6 +37,7 @@ export default function Home() {
         </a>
         <nav aria-label="Main navigation">
           <a href="#quests">Explore quests</a>
+          <a href="#feedback">Feedback</a>
           <a href="/signup?mode=signin">Sign in</a>
           <a className="nav-cta" href="/signup">Sign up</a>
         </nav>
@@ -101,6 +104,15 @@ export default function Home() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="feedback-section" id="feedback">
+        <div className="feedback-copy">
+          <p className="eyebrow"><span /> Help shape QuestLoop</p>
+          <h2>What would make your progress easier?</h2>
+          <p>Found something confusing? Have a feature idea? Send it directly to the team.</p>
+        </div>
+        <FeedbackForm />
       </section>
 
       <section className="waitlist-section" id="get-started">

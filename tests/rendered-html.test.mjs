@@ -28,6 +28,7 @@ test("server-renders the QuestLoop landing page", async () => {
   assert.match(html, /Sign in/);
   assert.match(html, /Sign up/);
   assert.match(html, /Create free account/);
+  assert.match(html, /Send feedback/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 

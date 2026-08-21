@@ -97,6 +97,21 @@ h1 em, .waitlist-copy em { color: var(--coral); font-family: Georgia, serif; fon
 .launch-actions > a:nth-child(2) { padding-bottom: 4px; border-bottom: 1px solid #7b7f77; color: white; font-size: 13px; font-weight: 700; }
 .launch-actions p { margin: 5px 0 0; color: #8f938c; font-size: 11px; }
 
+.feedback-section { padding: 92px max(32px, calc((100vw - 1176px) / 2)); display: grid; grid-template-columns: 1fr .82fr; gap: 90px; align-items: start; background: #f0eee8; border-top: 1px solid var(--ink); }
+.feedback-copy h2 { max-width: 640px; margin: 0; font-size: clamp(39px, 4.6vw, 62px); line-height: 1; letter-spacing: -.055em; }
+.feedback-copy > p:last-child { max-width: 520px; margin: 24px 0 0; color: #666a63; line-height: 1.65; }
+.feedback-form { padding: 26px; border: 1px solid var(--ink); border-radius: 3px; background: white; box-shadow: 8px 8px 0 var(--lime); }
+.feedback-form label { display: block; margin: 0 0 8px; font-family: var(--font-geist-mono); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.feedback-form label:not(:first-child) { margin-top: 16px; }
+.feedback-form label span { color: #858980; font-weight: 500; }
+.feedback-form textarea, .feedback-form input { width: 100%; padding: 13px 14px; border: 1px solid #b8bbb3; border-radius: 3px; background: white; outline: 0; font: inherit; }
+.feedback-form textarea { min-height: 130px; resize: vertical; }
+.feedback-form textarea:focus, .feedback-form input:focus { border-color: var(--ink); box-shadow: 0 0 0 2px rgba(200,241,105,.65); }
+.feedback-form button { margin-top: 18px; padding: 14px 18px; border: 0; border-radius: 3px; background: var(--ink); color: white; font-weight: 800; cursor: pointer; }
+.feedback-form button:disabled { cursor: wait; opacity: .65; }
+.feedback-form .form-note { margin-bottom: 0; }
+.feedback-honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
 footer { min-height: 112px; padding: 30px max(32px, calc((100vw - 1176px) / 2)); display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; background: #10120f; color: #9da098; font-size: 12px; }
 .footer-brand { color: white; }
 footer p { text-align: center; }
@@ -115,6 +130,7 @@ footer > a:last-child { justify-self: end; }
   .quest-grid { grid-template-columns: 1fr; }
   .quest-card { min-height: 340px; }
   .waitlist-section { grid-template-columns: 1fr; gap: 48px; }
+  .feedback-section { grid-template-columns: 1fr; gap: 45px; }
 }
 
 @media (max-width: 560px) {
@@ -135,6 +151,7 @@ footer > a:last-child { justify-self: end; }
   .proof-bar p, .proof-bar span { white-space: nowrap; }
   .quests-section { padding: 82px 20px 90px; }
   .waitlist-section { padding: 82px 20px; }
+  .feedback-section { padding: 72px 20px; }
   .form-row { flex-direction: column; }
   footer { padding: 32px 20px; grid-template-columns: 1fr; gap: 24px; text-align: center; }
   footer p { margin: 0; }
