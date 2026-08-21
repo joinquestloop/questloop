@@ -36,7 +36,7 @@ export default function Home() {
         <nav aria-label="Main navigation">
           <a href="#quests">Explore quests</a>
           <a href="/signup?mode=signin">Sign in</a>
-          <a className="nav-cta" href="/signup">Start a quest</a>
+          <a className="nav-cta" href="/signup">Sign up</a>
         </nav>
       </header>
 
