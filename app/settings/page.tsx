@@ -120,6 +120,7 @@ export default function SettingsPage() {
         setAvatarFile(null);
       }
       setMessage("Profile saved. Your public page is updated.");
+      window.location.assign("/profile");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Your profile could not be saved.");
     } finally {
