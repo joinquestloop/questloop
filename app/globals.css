@@ -218,7 +218,9 @@ footer > a:last-child { justify-self: end; }
 
 /* Account controls */
 .account-menu { display: inline-flex; align-items: center; gap: 8px; }
-.account-menu > a { padding: 8px 10px; border-radius: 999px; background: #e8e6de; font-family: var(--font-geist-mono); font-size: 9px; }
+.account-menu > a { padding: 5px 10px 5px 5px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid rgba(23,26,22,.08); border-radius: 999px; background: rgba(255,255,255,.82); font-family: var(--font-geist-mono); font-size: 9px; box-shadow: 0 5px 14px rgba(23,26,22,.07); }
+.account-avatar { width: 25px; height: 25px; display: grid; place-items: center; overflow: hidden; border-radius: 50%; background: var(--violet); color: var(--ink); font-size: 9px; font-weight: 850; }
+.account-avatar img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .account-menu button { padding: 0; border: 0; background: transparent; color: #757970; cursor: pointer; font-size: 10px; }
 .account-loading, .account-signin { color: #7a7e76; font-size: 10px; }
 .quest-picker-account { display: flex; align-items: center; gap: 16px; }
@@ -586,4 +588,94 @@ footer > a:last-child { justify-self: end; }
   .orbit-two, .quest-confirm-backdrop, .quest-confirm-dialog, .community-sparkles span, .feed-proof-actions button.cheered, .picker-card, .feed-proof-card { animation: none; }
   .picker-card, .picker-symbol, .picker-action-text, .feed-proof-card, .feed-proof-actions button, .feed-open-profile { transition: none; }
   .feed-proof-card, .picker-card { opacity: 1; }
+}
+
+/* Professional product-wide visual system */
+body { background: #f7f7f2; }
+::selection { background: var(--lime); color: var(--ink); }
+a, button { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid rgba(126,94,255,.55); outline-offset: 3px; }
+
+.site-header, .dashboard-header, .quest-picker-header, .auth-header {
+  position: sticky;
+  z-index: 15;
+  top: 0;
+  width: min(1240px, 100%);
+  background: rgba(247,247,242,.86);
+  border-bottom-color: rgba(23,26,22,.1);
+  backdrop-filter: blur(18px) saturate(1.3);
+}
+.site-header nav > a:not(.nav-cta), .dashboard-header nav > a, .auth-back { position: relative; color: #555a52; transition: color .18s ease; }
+.site-header nav > a:not(.nav-cta):hover, .dashboard-header nav > a:hover, .auth-back:hover { color: var(--ink); }
+.brand-mark { box-shadow: 0 4px 12px rgba(23,26,22,.18); }
+.nav-cta { border: 0; background: var(--ink); color: white; box-shadow: 0 5px 14px rgba(23,26,22,.16); }
+.nav-cta:hover { transform: translateY(-1px); }
+
+.auth-submit, .button-primary, .launch-actions > a:first-child, .community-preview-copy > a { border-radius: 10px; box-shadow: 0 8px 20px rgba(23,26,22,.16); transition: transform .18s ease, box-shadow .18s ease; }
+.auth-submit:hover, .button-primary:hover, .launch-actions > a:first-child:hover, .community-preview-copy > a:hover { transform: translateY(-2px); box-shadow: 0 11px 24px rgba(23,26,22,.2); }
+
+.how-grid article, .quest-card, .picker-card, .feed-proof-card, .public-proof-list, .public-active-quests, .proof-panel, .quest-rules-panel, .settings-card, .auth-card, .onboarding-card, .quest-picker-empty, .empty-dashboard, .profile-empty {
+  border-color: rgba(23,26,22,.14);
+  border-radius: 18px;
+  box-shadow: 0 18px 46px rgba(23,26,22,.08);
+}
+.how-grid article:hover, .quest-card:hover, .picker-card:hover, .feed-proof-card:hover { box-shadow: 0 22px 48px rgba(23,26,22,.14); }
+
+.auth-page { background: radial-gradient(circle at 12% 22%, rgba(200,241,105,.3), transparent 25%), radial-gradient(circle at 88% 72%, rgba(168,145,255,.2), transparent 24%), #f7f7f2; }
+.auth-card { border: 1px solid rgba(23,26,22,.12); background: rgba(255,255,252,.95); }
+.auth-tabs { padding: 5px; border-radius: 12px; }
+.auth-tabs button { border-radius: 8px; }
+.auth-form input, .handle-input, .settings-card input, .settings-card textarea, .proof-form textarea, .proof-form input, .proof-form select, .feedback-form textarea, .feedback-form input, .quest-suggestion-form input { border-color: #d8dad4; border-radius: 10px; background: #fff; }
+.onboarding-page { background: radial-gradient(circle at 18% 18%, rgba(200,241,105,.18), transparent 28%), radial-gradient(circle at 82% 78%, rgba(168,145,255,.18), transparent 26%), var(--ink); }
+.onboarding-card { box-shadow: 0 28px 80px rgba(0,0,0,.35); }
+.onboarding-success > div { border-color: rgba(23,26,22,.12); border-radius: 12px; }
+
+.choose-quest-page, .quest-dashboard, .settings-page, .public-profile-page { background: radial-gradient(circle at 8% 12%, rgba(200,241,105,.16), transparent 23%), #f7f7f2; }
+.quest-picker-intro, .dashboard-hero, .settings-intro { position: relative; }
+.picker-card { border-color: rgba(23,26,22,.12); }
+.picker-card:hover { transform: translateY(-6px); }
+.picker-card:active { transform: translateY(-1px) scale(.992); box-shadow: 0 12px 30px rgba(23,26,22,.12); }
+.picker-card.coral { background: linear-gradient(145deg, #ff8a74, #ffae9e); }
+.picker-card.violet { background: linear-gradient(145deg, #b9a7ff, #d6ccff); }
+.picker-card.lime { background: linear-gradient(145deg, #c8f169, #e1f9aa); }
+.picker-suggestion-card { background: linear-gradient(145deg, #171a16, #2b3029); }
+.picker-coming-soon { background: rgba(255,255,255,.62); }
+.quest-confirm-dialog { border: 0; border-radius: 20px; background: #fff; box-shadow: 0 30px 90px rgba(0,0,0,.3); }
+
+.day-orbit { border: 0; background: linear-gradient(145deg, var(--coral), #ffa998); box-shadow: 0 18px 45px rgba(255,112,88,.28); }
+.dashboard-stats, .public-profile-stats { overflow: hidden; border-color: rgba(23,26,22,.12); border-radius: 16px; box-shadow: 0 14px 36px rgba(23,26,22,.06); }
+.proof-panel { box-shadow: 0 18px 46px rgba(23,26,22,.08); }
+.quest-rules-panel { background: linear-gradient(145deg, #171a16, #292e27); }
+.submitted-proof { border-color: #dcebc2; border-radius: 14px; }
+.proof-image, .feed-proof-image, .profile-proof-image { overflow: hidden; border: 0; border-radius: 14px; box-shadow: 0 10px 28px rgba(23,26,22,.1); }
+
+.community-page { background: radial-gradient(circle at 10% 16%, rgba(200,241,105,.24), transparent 24%), radial-gradient(circle at 90% 24%, rgba(168,145,255,.18), transparent 23%), #f7f7f2; }
+.community-momentum { border-color: rgba(23,26,22,.12); box-shadow: 0 8px 22px rgba(23,26,22,.08); }
+.feed-proof-card:nth-child(n) { border-color: rgba(23,26,22,.12); box-shadow: 0 14px 34px rgba(23,26,22,.08); }
+.feed-proof-card:hover { transform: translateY(-5px); box-shadow: 0 20px 44px rgba(23,26,22,.14); }
+.feed-proof-actions button:hover { box-shadow: 0 6px 14px rgba(23,26,22,.13); }
+
+.public-profile-header { margin-top: 34px; padding: 34px; border: 1px solid rgba(23,26,22,.1); border-radius: 22px; background: rgba(255,255,252,.8); box-shadow: 0 18px 50px rgba(23,26,22,.07); }
+.public-avatar { box-shadow: 0 14px 30px rgba(23,26,22,.18), 0 0 0 1px rgba(23,26,22,.12); }
+.profile-proof-card { margin-top: 12px; padding: 22px; border: 1px solid #e1e2dc; border-radius: 14px; background: #fbfcf8; }
+.public-active-quests article { border-color: #e0e2dc; border-radius: 12px; }
+.share-profile-button { border: 0; border-radius: 10px; background: #fff0ec; transition: transform .18s ease; }
+.share-profile-button:hover { transform: translateY(-2px); }
+
+.settings-card { border: 1px solid rgba(23,26,22,.12); }
+.settings-avatar { overflow: hidden; border: 3px solid white; box-shadow: 0 8px 22px rgba(23,26,22,.16), 0 0 0 1px rgba(23,26,22,.12); }
+.settings-signout { border-color: #e1d3cf; border-radius: 10px; }
+
+@media (max-width: 850px) {
+  .public-profile-header { margin-top: 20px; }
+}
+
+@media (max-width: 560px) {
+  .site-header, .dashboard-header, .quest-picker-header, .auth-header { background: rgba(247,247,242,.94); }
+  .site-header nav, .dashboard-header nav { gap: 12px; }
+  .site-header .nav-cta { padding: 9px 13px; }
+  .dashboard-hero, .quest-picker-intro, .community-intro, .settings-layout { padding-top: 38px; }
+  .dashboard-stats, .public-profile-stats { border-radius: 12px; }
+  .public-profile-header { padding: 26px 20px; border-radius: 18px; }
+  .feed-proof-card, .proof-panel, .quest-rules-panel, .settings-card, .auth-card, .onboarding-card { border-radius: 15px; }
 }

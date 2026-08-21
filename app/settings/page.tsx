@@ -158,7 +158,7 @@ export default function SettingsPage() {
     <main className="settings-page">
       <header className="dashboard-header">
         <a className="brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
-        <nav><a href="/quest">My quest</a><a href="/profile">Public profile</a></nav>
+        <nav><a href="/quest">My quest</a><a href="/community">Community</a><a href="/profile">Public profile</a></nav>
       </header>
 
       <section className="settings-layout">

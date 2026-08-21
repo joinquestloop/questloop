@@ -1,9 +1,11 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useState } from "react";
 
 export default function AccountMenu() {
   const [handle, setHandle] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -18,9 +20,13 @@ export default function AccountMenu() {
         return;
       }
 
-      const { data: profile } = await supabase.from("profiles").select("handle").eq("id", authData.user.id).maybeSingle();
+      const { data: profile } = await supabase.from("profiles").select("handle, avatar_url").eq("id", authData.user.id).maybeSingle();
       if (!active) return;
       setHandle(profile?.handle ?? null);
+      if (profile?.avatar_url) {
+        const { data } = await supabase.storage.from("proof-images").createSignedUrl(profile.avatar_url, 3600);
+        if (active) setAvatarUrl(data?.signedUrl ?? "");
+      }
       setSignedIn(true);
     });
 
@@ -40,7 +46,10 @@ export default function AccountMenu() {
 
   return (
     <div className="account-menu">
-      <a href="/settings">@{handle || "member"}</a>
+      <a href="/settings" aria-label="Open account settings">
+        <span className="account-avatar">{avatarUrl ? <img src={avatarUrl} alt="" /> : (handle || "M").charAt(0).toUpperCase()}</span>
+        <span>@{handle || "member"}</span>
+      </a>
       <button type="button" onClick={signOut}>Sign out</button>
     </div>
   );
