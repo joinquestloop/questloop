@@ -92,6 +92,10 @@ h1 em, .waitlist-copy em { color: var(--coral); font-family: Georgia, serif; fon
 .form-note { min-height: 20px; margin: 12px 0 0; color: #8f938c; font-size: 11px; }
 .form-note.success { color: var(--lime); }
 .form-note.error { color: #ff8a74; }
+.launch-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.launch-actions > a:first-child { padding: 16px 20px; display: inline-flex; justify-content: space-between; gap: 40px; border-radius: 3px; background: var(--lime); color: var(--ink); font-weight: 800; }
+.launch-actions > a:nth-child(2) { padding-bottom: 4px; border-bottom: 1px solid #7b7f77; color: white; font-size: 13px; font-weight: 700; }
+.launch-actions p { margin: 5px 0 0; color: #8f938c; font-size: 11px; }
 
 footer { min-height: 112px; padding: 30px max(32px, calc((100vw - 1176px) / 2)); display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; background: #10120f; color: #9da098; font-size: 12px; }
 .footer-brand { color: white; }
@@ -115,6 +119,8 @@ footer > a:last-child { justify-self: end; }
 
 @media (max-width: 560px) {
   .site-header { height: 72px; padding-inline: 20px; }
+  .site-header nav { gap: 11px; }
+  .site-header nav a { font-size: 12px; }
   .nav-cta { padding: 10px 13px; }
   .hero { padding: 52px 20px 60px; }
   .hero h1 { font-size: 55px; }

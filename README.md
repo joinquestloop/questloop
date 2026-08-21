@@ -44,4 +44,4 @@ Connect the GitHub repository in Cloudflare Pages with these settings:
 
 The build produces a static Pages bundle, so the first release stays fast and needs no server runtime.
 
-The early-access form sends signups to the QuestLoop Early Access form in Loops and includes clear loading, success, and retry states.
+The landing page sends new members directly into the live QuestLoop account and quest onboarding flow.

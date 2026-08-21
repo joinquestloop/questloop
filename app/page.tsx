@@ -1,7 +1,3 @@
-"use client";
-
-import { FormEvent, useState } from "react";
-
 const quests = [
   {
     number: "01",
@@ -29,48 +25,7 @@ const quests = [
   },
 ];
 
-const LOOPS_FORM_ENDPOINT =
-  "https://app.loops.so/api/newsletter-form/cmt1vkcz7030g0j0btod9r9ck";
-
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (!email.trim()) return;
-
-    setStatus("submitting");
-    setMessage("Adding you to the loop…");
-
-    try {
-      const body = new URLSearchParams({
-        email: email.trim(),
-        source: "QuestLoop landing page",
-        userGroup: "Early access",
-      });
-      const response = await fetch(LOOPS_FORM_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body,
-      });
-      const result = (await response.json()) as { success?: boolean; message?: string };
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Subscription failed");
-      }
-
-      setStatus("success");
-      setMessage("You’re in — we’ll let you know when the first quests open.");
-      setEmail("");
-    } catch {
-      setStatus("error");
-      setMessage("That didn’t go through. Please wait a moment and try again.");
-    }
-  }
-
   return (
     <main>
       <header className="site-header">
@@ -93,7 +48,7 @@ export default function Home() {
             Join a quest. Make progress. Share proof. Repeat.
           </p>
           <div className="hero-actions">
-            <a className="button button-primary" href="#early-access">Join early access <span>↗</span></a>
+            <a className="button button-primary" href="/signup">Start your first quest <span>↗</span></a>
             <a className="text-link" href="#quests">See the first quests <span>↓</span></a>
           </div>
         </div>
@@ -142,40 +97,24 @@ export default function Home() {
               <div className="quest-details">
                 <span>{quest.duration}</span><span>{quest.rhythm}</span>
               </div>
-              <a href="#early-access" aria-label={`Get early access to ${quest.title}`}>I’m in <span>→</span></a>
+              <a href="/signup" aria-label={`Start ${quest.title}`}>Start this quest <span>→</span></a>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="waitlist-section" id="early-access">
+      <section className="waitlist-section" id="get-started">
         <div className="waitlist-orbit" />
         <div className="waitlist-copy">
-          <p className="eyebrow light"><span /> Be there from day one</p>
+          <p className="eyebrow light"><span /> Your Day 1 is ready</p>
           <h2>Your next chapter<br />starts with <em>day one.</em></h2>
-          <p>Join the early-access list. We’ll only email when there’s something worth showing up for.</p>
+          <p>Create a free account, choose one quest, and make your first piece of progress visible today.</p>
         </div>
-        <form className="waitlist-form" onSubmit={handleSubmit}>
-          <label htmlFor="email">Email address</label>
-          <div className="form-row">
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
-              autoComplete="email"
-              required
-            />
-            <button type="submit" disabled={status === "submitting"}>
-              {status === "submitting" ? "Joining…" : "Join the loop"} <span>↗</span>
-            </button>
-          </div>
-          <p className={`form-note ${status}`} aria-live="polite">
-            {message || "No spam. No noise. Just progress."}
-          </p>
-        </form>
+        <div className="launch-actions">
+          <a href="/signup">Create free account <span>↗</span></a>
+          <a href="/signup?mode=signin">Already a member? Sign in</a>
+          <p>No endless feed. No follower race. Just progress.</p>
+        </div>
       </section>
 
       <footer>
