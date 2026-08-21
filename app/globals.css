@@ -209,7 +209,7 @@ footer > a:last-child { justify-self: end; }
 .profile-loading { display: grid; place-items: center; }
 .profile-empty { width: min(540px, calc(100% - 40px)); margin: 80px auto; padding: 40px; border: 1px solid var(--ink); background: white; text-align: center; box-shadow: 8px 8px 0 var(--lime); }
 .public-profile-header { max-width: 1176px; margin: 0 auto; padding: 62px 0 36px; display: grid; grid-template-columns: 128px 1fr auto; gap: 28px; align-items: center; }
-.public-avatar { width: 128px; height: 128px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--violet); box-shadow: 6px 6px 0 var(--ink); font-size: 48px; font-weight: 800; }
+.public-avatar { width: 128px; height: 128px; display: grid; place-items: center; overflow: hidden; border: 2px solid white; border-radius: 50%; background: var(--violet); box-shadow: 0 9px 24px rgba(23,26,22,.2), 0 0 0 1px var(--ink); font-size: 48px; font-weight: 800; }
 .public-identity h1 { margin: 0; font-size: 47px; letter-spacing: -.06em; }
 .public-identity > strong { color: #666a62; }
 .public-identity p { margin: 14px 0 8px; }

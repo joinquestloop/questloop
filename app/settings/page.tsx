@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 export default function SettingsPage() {
   const [userId, setUserId] = useState<string | null>(null);
@@ -13,7 +13,9 @@ export default function SettingsPage() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [confirmingSave, setConfirmingSave] = useState(false);
   const [message, setMessage] = useState("");
+  const confirmSaveButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -59,9 +61,26 @@ export default function SettingsPage() {
     };
   }, []);
 
-  async function saveProfile(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    if (!confirmingSave) return;
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setConfirmingSave(false);
+    }
+
+    window.addEventListener("keydown", closeOnEscape);
+    confirmSaveButtonRef.current?.focus();
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [confirmingSave]);
+
+  function requestSave(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setConfirmingSave(true);
+  }
+
+  async function saveProfile() {
     if (!userId) return;
+    setConfirmingSave(false);
     setSaving(true);
     setMessage("Saving your profile…");
 
@@ -153,7 +172,7 @@ export default function SettingsPage() {
             {avatarUrl ? <img src={avatarUrl} alt="New profile preview" /> : (displayName || handle).charAt(0).toUpperCase()}
           </div>
           <strong>@{handle}</strong>
-          <form onSubmit={saveProfile}>
+          <form onSubmit={requestSave}>
             <label htmlFor="profile-avatar">Profile picture</label>
             <input id="profile-avatar" className="avatar-file-input" type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => chooseAvatar(event.target.files?.[0] ?? null)} />
             <p className="avatar-help">PNG, JPEG or WebP · maximum 2 MB</p>
@@ -168,6 +187,21 @@ export default function SettingsPage() {
           <button className="settings-signout" type="button" onClick={signOut}>Sign out of QuestLoop</button>
         </div>
       </section>
+
+      {confirmingSave && (
+        <div className="quest-confirm-backdrop">
+          <button className="quest-confirm-dismiss" type="button" aria-label="Close confirmation" tabIndex={-1} onClick={() => setConfirmingSave(false)} />
+          <section className="quest-confirm-dialog save-profile-confirm" role="dialog" aria-modal="true" aria-labelledby="save-profile-title">
+            <p className="panel-kicker">Confirm your changes</p>
+            <h2 id="save-profile-title">Update your public profile?</h2>
+            <p>Your name, bio, and selected profile picture will be visible on your public QuestLoop page.</p>
+            <div className="quest-confirm-actions">
+              <button type="button" onClick={() => setConfirmingSave(false)}>Keep editing</button>
+              <button ref={confirmSaveButtonRef} type="button" onClick={() => void saveProfile()}>Yes, save changes →</button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
