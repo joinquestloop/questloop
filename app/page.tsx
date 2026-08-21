@@ -103,6 +103,24 @@ export default function Home() {
               <a href="/signup" aria-label={`Start ${quest.title}`}>Start this quest <span>→</span></a>
             </article>
           ))}
+
+          <article className="quest-card upcoming">
+            <div className="quest-number">NEXT</div>
+            <div className="quest-symbol" aria-hidden="true">＋</div>
+            <h3>More quests coming soon.</h3>
+            <p>New paths for health, creativity, learning, building, and personal growth are on the way.</p>
+            <div className="quest-details"><span>In progress</span><span>Stay tuned</span></div>
+            <a href="/signup">Join QuestLoop <span>→</span></a>
+          </article>
+
+          <article className="quest-card suggestion">
+            <div className="quest-number">YOUR TURN</div>
+            <div className="quest-symbol" aria-hidden="true">?</div>
+            <h3>What quest do you want?</h3>
+            <p>Tell us what you would commit to completing next and help shape QuestLoop.</p>
+            <div className="quest-details"><span>Your idea</span><span>Community-led</span></div>
+            <a href="#feedback">Suggest a quest <span>↓</span></a>
+          </article>
         </div>
       </section>
 

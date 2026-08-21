@@ -68,6 +68,11 @@ h1 em, .waitlist-copy em { color: var(--coral); font-family: Georgia, serif; fon
 .quest-card.coral { background: #ff8a74; }
 .quest-card.violet { background: #b9a7ff; }
 .quest-card.lime { background: var(--lime); }
+.quest-card.upcoming { background: #e7e4dc; border-style: dashed; }
+.quest-card.suggestion { background: var(--ink); color: white; }
+.quest-card.suggestion > p { color: #c4c8c0; }
+.quest-card.suggestion .quest-details span, .quest-card.suggestion > a { border-color: #666b63; }
+.quest-card.suggestion .quest-details span { color: var(--lime); }
 .quest-number { font-family: var(--font-geist-mono); font-size: 11px; font-weight: 700; }
 .quest-symbol { position: absolute; top: 24px; right: 24px; font-family: var(--font-geist-mono); font-size: 38px; font-weight: 600; }
 .quest-card h3 { max-width: 270px; margin: 100px 0 14px; font-size: 30px; line-height: 1.05; letter-spacing: -.05em; }
