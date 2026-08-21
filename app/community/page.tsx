@@ -181,6 +181,7 @@ export default function CommunityPage() {
                 <div className="feed-proof-content">
                   <div className="feed-proof-meta">
                     <strong>{handles[proof.user_id] || "QuestLoop member"}</strong>
+                    <span className="feed-quest-tag">{quest.title}</span>
                     <span>Day {proof.quest_day}</span>
                     <time dateTime={proof.submitted_at}>{new Date(proof.submitted_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</time>
                   </div>
