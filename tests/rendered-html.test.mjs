@@ -20,7 +20,8 @@ test("server-renders the QuestLoop landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /QuestLoop/);
-  assert.match(html, /Start something/);
+  assert.match(html, /Turn intentions into/);
+  assert.match(html, /A social network where/);
   assert.match(html, /100 Days of Code/);
   assert.match(html, /Build Your First SaaS/);
   assert.match(html, /30 Days of DSA/);
