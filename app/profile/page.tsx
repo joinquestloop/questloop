@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable @next/next/no-html-link-for-pages */
+/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
 import { useEffect, useState } from "react";
 
@@ -26,6 +26,7 @@ type PublicProof = {
   quest_day: number;
   progress_text: string;
   proof_url: string | null;
+  image_path: string | null;
   submitted_at: string;
   cheerCount: number;
 };
@@ -35,6 +36,7 @@ export default function PublicProfilePage() {
   const [quests, setQuests] = useState<QuestSummary[]>([]);
   const [proofs, setProofs] = useState<PublicProof[]>([]);
   const [questNames, setQuestNames] = useState<Record<string, string>>({});
+  const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [shareMessage, setShareMessage] = useState("");
@@ -78,7 +80,7 @@ export default function PublicProfilePage() {
         supabase.from("quest_memberships").select("quest_id, started_on").eq("user_id", profileData.id).eq("status", "active"),
         supabase
           .from("proofs")
-          .select("id, quest_id, quest_day, progress_text, proof_url, submitted_at")
+          .select("id, quest_id, quest_day, progress_text, proof_url, image_path, submitted_at")
           .eq("user_id", profileData.id)
           .eq("visibility", "public")
           .order("submitted_at", { ascending: false })
@@ -106,6 +108,14 @@ export default function PublicProfilePage() {
       setProfile(profileData);
       setQuestNames(names);
       setProofs(publicProofs.map((proof) => ({ ...proof, cheerCount: cheerCounts[proof.id] ?? 0 })));
+      const imageProofs = publicProofs.filter((proof) => proof.image_path);
+      if (imageProofs.length) {
+        const signedEntries = await Promise.all(imageProofs.map(async (proof) => {
+          const { data } = await supabase.storage.from("proof-images").createSignedUrl(proof.image_path!, 3600);
+          return [proof.id, data?.signedUrl ?? ""] as const;
+        }));
+        if (active) setImageUrls(Object.fromEntries(signedEntries.filter((entry) => entry[1])));
+      }
       setQuests((memberships ?? []).map((membership) => {
         const questInfo = (questData ?? []).find((quest) => quest.id === membership.quest_id);
         return {
@@ -185,6 +195,7 @@ export default function PublicProfilePage() {
             <article className="profile-proof-card" key={proof.id}>
               <div className="profile-proof-day"><strong>Day {proof.quest_day}</strong><span>{questNames[proof.quest_id] || "Quest"}</span></div>
               <p>{proof.progress_text}</p>
+              {imageUrls[proof.id] && <img className="profile-proof-image" src={imageUrls[proof.id]} alt={`Day ${proof.quest_day} public proof`} />}
               <div>{proof.proof_url ? <a href={proof.proof_url} target="_blank" rel="noreferrer">View proof ↗</a> : <span>Progress update</span>}<strong>♥ {proof.cheerCount}</strong></div>
             </article>
           )) : <div className="profile-no-proofs">No public proofs have been shared yet.</div>}

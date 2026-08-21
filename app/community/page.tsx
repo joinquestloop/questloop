@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable @next/next/no-html-link-for-pages */
+/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
 import { useEffect, useState } from "react";
 import AccountMenu from "../../components/account-menu";
@@ -10,6 +10,7 @@ type FeedProof = {
   quest_day: number;
   progress_text: string;
   proof_url: string | null;
+  image_path: string | null;
   submitted_at: string;
 };
 
@@ -21,6 +22,7 @@ export default function CommunityPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [handles, setHandles] = useState<Record<string, string>>({});
   const [cheerCounts, setCheerCounts] = useState<Record<string, number>>({});
+  const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
   const [myCheers, setMyCheers] = useState<Set<string>>(new Set());
   const [updatingProofId, setUpdatingProofId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -59,7 +61,7 @@ export default function CommunityPage() {
         supabase.from("quests").select("id, title").eq("id", membership.quest_id).single(),
         supabase
           .from("proofs")
-          .select("id, user_id, quest_day, progress_text, proof_url, submitted_at")
+          .select("id, user_id, quest_day, progress_text, proof_url, image_path, submitted_at")
           .eq("quest_id", membership.quest_id)
           .eq("visibility", "public")
           .order("submitted_at", { ascending: false })
@@ -92,6 +94,14 @@ export default function CommunityPage() {
         }
         setCheerCounts(counts);
         setMyCheers(new Set((ownCheers ?? []).map((cheer) => cheer.proof_id)));
+        const imageProofs = loadedProofs.filter((proof) => proof.image_path);
+        if (imageProofs.length) {
+          const signedEntries = await Promise.all(imageProofs.map(async (proof) => {
+            const { data } = await supabase.storage.from("proof-images").createSignedUrl(proof.image_path!, 3600);
+            return [proof.id, data?.signedUrl ?? ""] as const;
+          }));
+          if (active) setImageUrls(Object.fromEntries(signedEntries.filter((entry) => entry[1])));
+        }
       }
 
       setLoading(false);
@@ -171,6 +181,7 @@ export default function CommunityPage() {
                     <time dateTime={proof.submitted_at}>{new Date(proof.submitted_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</time>
                   </div>
                   <p>{proof.progress_text}</p>
+                  {imageUrls[proof.id] && <img className="feed-proof-image" src={imageUrls[proof.id]} alt={`Day ${proof.quest_day} proof by ${handles[proof.user_id] || "a QuestLoop member"}`} />}
                   {proof.proof_url && <a href={proof.proof_url} target="_blank" rel="noreferrer">View proof ↗</a>}
                   <div className="feed-proof-actions">
                     {isMine ? (

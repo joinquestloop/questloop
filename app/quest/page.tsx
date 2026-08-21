@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable @next/next/no-html-link-for-pages */
+/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import AccountMenu from "../../components/account-menu";
@@ -23,6 +23,7 @@ type Proof = {
   quest_day: number;
   progress_text: string;
   proof_url: string | null;
+  image_path: string | null;
   visibility: string;
   submitted_at: string;
 };
@@ -34,6 +35,8 @@ export default function QuestDashboardPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [progressText, setProgressText] = useState("");
   const [proofUrl, setProofUrl] = useState("");
+  const [proofImage, setProofImage] = useState<File | null>(null);
+  const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
   const [visibility, setVisibility] = useState("public");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -70,7 +73,7 @@ export default function QuestDashboardPage() {
 
       const [{ data: questData, error: questError }, { data: proofData, error: proofError }] = await Promise.all([
         supabase.from("quests").select("id, title, description, duration_days, proof_rhythm").eq("id", membershipData.quest_id).single(),
-        supabase.from("proofs").select("id, quest_day, progress_text, proof_url, visibility, submitted_at").eq("membership_id", membershipData.id).order("quest_day", { ascending: false }),
+        supabase.from("proofs").select("id, quest_day, progress_text, proof_url, image_path, visibility, submitted_at").eq("membership_id", membershipData.id).order("quest_day", { ascending: false }),
       ]);
 
       if (questError) throw questError;
@@ -80,6 +83,14 @@ export default function QuestDashboardPage() {
       setMembership(membershipData);
       setQuest(questData);
       setProofs(proofData ?? []);
+      const imageProofs = (proofData ?? []).filter((proof) => proof.image_path);
+      if (imageProofs.length) {
+        const signedEntries = await Promise.all(imageProofs.map(async (proof) => {
+          const { data } = await supabase.storage.from("proof-images").createSignedUrl(proof.image_path!, 3600);
+          return [proof.id, data?.signedUrl ?? ""] as const;
+        }));
+        if (active) setImageUrls(Object.fromEntries(signedEntries.filter((entry) => entry[1])));
+      }
       setLoading(false);
     }
 
@@ -113,9 +124,19 @@ export default function QuestDashboardPage() {
 
     setSubmitting(true);
     setMessage("Submitting your proof…");
+    let uploadedPath: string | null = null;
 
     try {
       const { supabase } = await import("../../lib/supabase");
+      if (proofImage) {
+        if (!["image/jpeg", "image/png", "image/webp"].includes(proofImage.type)) throw new Error("Upload a PNG, JPEG or WebP image.");
+        if (proofImage.size > 5 * 1024 * 1024) throw new Error("The proof image must be 5 MB or smaller.");
+        const extension = proofImage.name.split(".").pop()?.toLowerCase() || "jpg";
+        uploadedPath = `${userId}/${membership.id}/day-${currentDay}-${crypto.randomUUID()}.${extension}`;
+        const { error: uploadError } = await supabase.storage.from("proof-images").upload(uploadedPath, proofImage, { contentType: proofImage.type, upsert: false });
+        if (uploadError) throw uploadError;
+      }
+
       const { data, error } = await supabase
         .from("proofs")
         .insert({
@@ -125,17 +146,27 @@ export default function QuestDashboardPage() {
           quest_day: currentDay,
           progress_text: progressText.trim(),
           proof_url: proofUrl.trim() || null,
+          image_path: uploadedPath,
           visibility,
         })
-        .select("id, quest_day, progress_text, proof_url, visibility, submitted_at")
+        .select("id, quest_day, progress_text, proof_url, image_path, visibility, submitted_at")
         .single();
 
       if (error) throw error;
       setProofs((current) => [data, ...current]);
+      if (uploadedPath) {
+        const { data: signedImage } = await supabase.storage.from("proof-images").createSignedUrl(uploadedPath, 3600);
+        if (signedImage?.signedUrl) setImageUrls((current) => ({ ...current, [data.id]: signedImage.signedUrl }));
+      }
       setProgressText("");
       setProofUrl("");
+      setProofImage(null);
       setMessage(`Day ${currentDay} complete. Your proof is now part of your progress.`);
     } catch (error) {
+      if (uploadedPath) {
+        const { supabase } = await import("../../lib/supabase");
+        await supabase.storage.from("proof-images").remove([uploadedPath]);
+      }
       setMessage(error instanceof Error ? error.message : "Your proof could not be submitted.");
     } finally {
       setSubmitting(false);
@@ -185,6 +216,7 @@ export default function QuestDashboardPage() {
             <article className="submitted-proof">
               <span>✓ Proof submitted</span>
               <p>{todayProof.progress_text}</p>
+              {imageUrls[todayProof.id] && <img className="proof-image" src={imageUrls[todayProof.id]} alt={`Day ${todayProof.quest_day} proof`} />}
               {todayProof.proof_url && <a href={todayProof.proof_url} target="_blank" rel="noreferrer">Open proof link ↗</a>}
             </article>
           ) : (
@@ -193,6 +225,8 @@ export default function QuestDashboardPage() {
               <textarea id="progress" value={progressText} onChange={(event) => setProgressText(event.target.value)} placeholder="Today I learned, built, solved or improved…" maxLength={1000} required />
               <label htmlFor="proof-url">Proof link <span>optional</span></label>
               <input id="proof-url" type="url" value={proofUrl} onChange={(event) => setProofUrl(event.target.value)} placeholder="https://github.com/…" />
+              <label htmlFor="proof-image">Proof image <span>optional · PNG, JPEG or WebP · max 5 MB</span></label>
+              <input id="proof-image" className="proof-file-input" type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => setProofImage(event.target.files?.[0] ?? null)} />
               <label htmlFor="visibility">Who can see this?</label>
               <select id="visibility" value={visibility} onChange={(event) => setVisibility(event.target.value)}>
                 <option value="public">Public — shown on my profile</option>
