@@ -679,3 +679,61 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .public-profile-header { padding: 26px 20px; border-radius: 18px; }
   .feed-proof-card, .proof-panel, .quest-rules-panel, .settings-card, .auth-card, .onboarding-card { border-radius: 15px; }
 }
+
+/* Unified professional navigation */
+.site-header, .dashboard-header, .quest-picker-header, .auth-header {
+  height: 72px;
+  max-width: none;
+  margin: 0;
+  padding-inline: max(24px, calc((100vw - 1176px) / 2));
+  background: rgba(250,250,247,.94);
+  border-bottom: 1px solid rgba(23,26,22,.09);
+  box-shadow: 0 8px 24px rgba(23,26,22,.045);
+  backdrop-filter: blur(20px) saturate(1.35);
+}
+.site-header .brand, .dashboard-header .brand, .quest-picker-header .brand, .auth-header .brand { flex: 0 0 auto; }
+.site-header nav, .dashboard-header nav { gap: 5px; }
+.site-header nav > a:not(.nav-cta), .dashboard-header nav > a, .auth-back {
+  padding: 9px 12px;
+  border-radius: 999px;
+  color: #555a52;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+.site-header nav > a:not(.nav-cta):hover, .dashboard-header nav > a:hover, .auth-back:hover {
+  background: #ebece6;
+  color: var(--ink);
+}
+.site-header .nav-cta, .dashboard-header .nav-cta {
+  margin-left: 4px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 5px 14px rgba(23,26,22,.14);
+}
+.account-menu { margin-left: 5px; }
+.account-menu > a { min-height: 38px; padding-right: 12px; background: white; }
+.account-menu button { padding: 8px 9px; border-radius: 999px; transition: background .18s ease, color .18s ease; }
+.account-menu button:hover { background: #f3e9e6; color: #9a3829; }
+.quest-picker-account { gap: 12px; }
+
+@media (max-width: 850px) {
+  .site-header, .dashboard-header, .quest-picker-header, .auth-header { padding-inline: 20px; }
+  .site-header nav, .dashboard-header nav { gap: 3px; }
+}
+
+@media (max-width: 560px) {
+  .site-header, .dashboard-header, .quest-picker-header, .auth-header { height: 66px; padding-inline: 16px; }
+  .brand { gap: 8px; font-size: 16px; }
+  .brand-mark { width: 29px; height: 29px; }
+  .site-header nav > a:not(.nav-cta), .dashboard-header nav > a { padding: 8px 9px; font-size: 11px; }
+  .site-header .nav-cta { margin-left: 0; padding: 9px 12px; }
+  .account-menu { margin-left: 0; }
+  .account-menu > a { min-height: 35px; padding: 4px; }
+  .account-menu > a > span:last-child { display: none; }
+  .account-avatar { width: 27px; height: 27px; }
+}
