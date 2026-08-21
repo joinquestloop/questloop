@@ -22,6 +22,7 @@ export default function CommunityPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [handles, setHandles] = useState<Record<string, string>>({});
   const [profileHandles, setProfileHandles] = useState<Record<string, string>>({});
+  const [avatarUrls, setAvatarUrls] = useState<Record<string, string>>({});
   const [cheerCounts, setCheerCounts] = useState<Record<string, number>>({});
   const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
   const [myCheers, setMyCheers] = useState<Set<string>>(new Set());
@@ -81,7 +82,7 @@ export default function CommunityPage() {
         const userIds = [...new Set(loadedProofs.map((proof) => proof.user_id))];
         const proofIds = loadedProofs.map((proof) => proof.id);
         const [{ data: profiles }, { data: cheers }, { data: ownCheers }] = await Promise.all([
-          supabase.from("profiles").select("id, handle, display_name").in("id", userIds),
+          supabase.from("profiles").select("id, handle, display_name, avatar_url").in("id", userIds),
           supabase.from("proof_cheers").select("proof_id, user_id").in("proof_id", proofIds),
           supabase.from("proof_cheers").select("proof_id").eq("user_id", authData.user.id).in("proof_id", proofIds),
         ]);
@@ -89,6 +90,14 @@ export default function CommunityPage() {
         if (!active) return;
         setHandles(Object.fromEntries((profiles ?? []).map((profile) => [profile.id, profile.display_name || `@${profile.handle || "member"}`])));
         setProfileHandles(Object.fromEntries((profiles ?? []).map((profile) => [profile.id, profile.handle])));
+        const avatarProfiles = (profiles ?? []).filter((profile) => profile.avatar_url);
+        if (avatarProfiles.length) {
+          const avatarEntries = await Promise.all(avatarProfiles.map(async (profile) => {
+            const { data } = await supabase.storage.from("proof-images").createSignedUrl(profile.avatar_url!, 3600);
+            return [profile.id, data?.signedUrl ?? ""] as const;
+          }));
+          if (active) setAvatarUrls(Object.fromEntries(avatarEntries.filter((entry) => entry[1])));
+        }
 
         const counts: Record<string, number> = {};
         for (const cheer of cheers ?? []) {
@@ -182,7 +191,9 @@ export default function CommunityPage() {
                 {profileHandles[proof.user_id] && (
                   <a className="feed-profile-link" href={`/profile?handle=${profileHandles[proof.user_id]}`} aria-label={`Open ${handles[proof.user_id] || "member"}'s profile`} />
                 )}
-                <div className="proof-author-avatar" aria-hidden="true">{(handles[proof.user_id] || "M").replace("@", "").charAt(0).toUpperCase()}</div>
+                <div className="proof-author-avatar" aria-hidden="true">
+                  {avatarUrls[proof.user_id] ? <img src={avatarUrls[proof.user_id]} alt="" /> : (handles[proof.user_id] || "M").replace("@", "").charAt(0).toUpperCase()}
+                </div>
                 <div className="feed-proof-content">
                   <div className="feed-proof-meta">
                     <strong>{handles[proof.user_id] || "QuestLoop member"}</strong>
