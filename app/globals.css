@@ -1016,3 +1016,68 @@ body, body * { transition-property: background-color, border-color, color, box-s
   .community-stream-header > div span { display: none; }
   .community-feed .feed-proof-card { padding-inline: 15px; }
 }
+
+/* Landing-page contrast: fixed dark surfaces must not invert with theme text */
+::selection { background: #ff8f7c; color: #171a16; }
+::-moz-selection { background: #ff8f7c; color: #171a16; }
+
+.progress-card,
+.community-preview-section,
+.waitlist-section,
+.quest-card.suggestion,
+.picker-suggestion-card,
+.quest-rules-panel,
+footer {
+  background-color: #171a16;
+  color: #f7f8f3;
+}
+.button-primary,
+.feedback-form button,
+.auth-submit,
+.quest-confirm-actions button:last-child {
+  background: #171a16;
+  color: #ffffff;
+}
+.button-primary:hover,
+.feedback-form button:hover,
+.auth-submit:hover { color: #ffffff; }
+.progress-card { border: 1px solid rgba(255,255,255,.1); }
+.progress-card :is(.card-topline, .card-community-row p, .card-label, .progress-meta) { color: #bdc5ba; }
+.progress-card .mini-avatar { border-color: #171a16; color: #171a16; }
+.progress-card .card-icon { color: #171a16; }
+.community-preview-section :is(.eyebrow, h2, .social-preview-card > p) { color: #f7f8f3; }
+.community-preview-copy > p:not(.eyebrow) { color: #bdc5ba; }
+.waitlist-section :is(.eyebrow, h2, label) { color: #f7f8f3; }
+.waitlist-copy > p:last-child, .waitlist-section .launch-actions p { color: #b8c0b5; }
+.quest-card.suggestion :is(h3, .quest-number, .quest-symbol),
+.picker-suggestion-card :is(h2, .picker-number, .picker-symbol),
+.quest-rules-panel :is(h2, .panel-kicker) { color: #f7f8f3; }
+
+[data-theme="dark"] .hero { background: transparent; }
+[data-theme="dark"] .progress-card { background: linear-gradient(145deg, #1a1f1a, #111411); box-shadow: 12px 12px 0 #9fcd3c, 0 24px 60px rgba(0,0,0,.35); }
+[data-theme="dark"] .progress-card h2 { color: #ffffff; }
+[data-theme="dark"] .progress-track { background: #3b4339; }
+[data-theme="dark"] .button-primary { border: 1px solid rgba(255,255,255,.14); background: #f3f5ee; color: #171a16; box-shadow: 0 8px 24px rgba(0,0,0,.28); }
+[data-theme="dark"] .button-primary:hover { background: var(--lime); color: #171a16; }
+[data-theme="dark"] .text-link { color: #f0f2ec; border-color: #737b70; }
+[data-theme="dark"] .proof-chip { background: #1d221d; color: #f4f6f0; border-color: #4b5349; }
+[data-theme="dark"] .proof-bar { background: #a9d94a; color: #171a16; border-color: #729b28; }
+[data-theme="dark"] .how-section, [data-theme="dark"] .quests-section { background: var(--surface); }
+[data-theme="dark"] .how-grid article { background: #171b17; border-color: #343a33; }
+[data-theme="dark"] .how-grid article :is(h3, > span) { color: #f2f4ed; }
+[data-theme="dark"] .how-grid article p { color: #b7beb4; }
+[data-theme="dark"] .how-icon { border-color: #53604e; color: #171a16; box-shadow: 3px 3px 0 #4a5148; }
+[data-theme="dark"] .quest-card.upcoming { background: #20251f; color: #f2f4ed; }
+[data-theme="dark"] .quest-card.upcoming > p { color: #b7beb4; }
+[data-theme="dark"] :is(.quest-card.suggestion, .picker-suggestion-card, .quest-rules-panel) { background: #171a16; color: #f7f8f3; }
+[data-theme="dark"] .community-preview-section { background: #10130f; }
+[data-theme="dark"] .social-preview-card { background: #1b201b; color: #f4f6f0; border-color: #3e473c; box-shadow: 0 16px 45px rgba(0,0,0,.3); }
+[data-theme="dark"] .social-preview-meta small, [data-theme="dark"] .social-preview-meta b { color: #b4bcb1; }
+[data-theme="dark"] .waitlist-section { background: #0f120f; }
+[data-theme="dark"] .form-row input { background: #1d221d; color: #f7f8f3; border-color: #4a5248; }
+[data-theme="dark"] .feedback-section { background: #121612; border-color: #323831; }
+[data-theme="dark"] .feedback-form { background: #171b17; border-color: #343a33; box-shadow: 0 18px 50px rgba(0,0,0,.3); }
+[data-theme="dark"] .feedback-form button, [data-theme="dark"] .auth-submit { background: #f3f5ee; color: #171a16; border-color: #f3f5ee; box-shadow: none; }
+[data-theme="dark"] .feedback-form button:hover, [data-theme="dark"] .auth-submit:hover { background: var(--lime); color: #171a16; }
+[data-theme="dark"] footer { background: #090b09; color: #abb2a8; }
+[data-theme="dark"] footer .footer-brand { color: #ffffff; }
