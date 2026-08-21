@@ -1,0 +1,114 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import Link from "next/link";
+import { supabase } from "../../lib/supabase";
+
+type Mode = "signup" | "signin";
+
+export default function SignupPage() {
+  const [mode, setMode] = useState<Mode>("signup");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  function switchMode(nextMode: Mode) {
+    setMode(nextMode);
+    setStatus("idle");
+    setMessage("");
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("loading");
+    setMessage(mode === "signup" ? "Creating your account…" : "Signing you in…");
+
+    if (mode === "signup") {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: { emailRedirectTo: `${window.location.origin}/onboarding` },
+      });
+
+      if (error) {
+        setStatus("error");
+        setMessage(error.message);
+        return;
+      }
+
+      if (data.session) {
+        window.location.assign("/onboarding");
+        return;
+      }
+
+      setStatus("success");
+      setMessage("Check your inbox and confirm your email to continue.");
+      return;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+
+    if (error) {
+      setStatus("error");
+      setMessage(error.message);
+      return;
+    }
+
+    window.location.assign("/onboarding");
+  }
+
+  return (
+    <main className="auth-page">
+      <header className="auth-header">
+        <Link className="brand" href="/" aria-label="QuestLoop home">
+          <span className="brand-mark" aria-hidden="true">Q</span>
+          <span>QuestLoop</span>
+        </Link>
+        <Link className="auth-back" href="/">← Back to home</Link>
+      </header>
+
+      <section className="auth-layout">
+        <div className="auth-story">
+          <p className="eyebrow"><span /> Your first step</p>
+          <h1>Make progress<br /><em>visible.</em></h1>
+          <p>Join a quest, show up consistently, and build a portfolio of proof—one day at a time.</p>
+          <div className="auth-loop" aria-label="QuestLoop account journey">
+            <span className="active">1</span><i /><span>2</span><i /><span>3</span>
+          </div>
+          <div className="auth-loop-labels"><span>Create account</span><span>Choose handle</span><span>Join a quest</span></div>
+        </div>
+
+        <div className="auth-card">
+          <div className="auth-tabs" role="tablist" aria-label="Account options">
+            <button type="button" className={mode === "signup" ? "active" : ""} onClick={() => switchMode("signup")}>Create account</button>
+            <button type="button" className={mode === "signin" ? "active" : ""} onClick={() => switchMode("signin")}>Sign in</button>
+          </div>
+          <div className="auth-card-copy">
+            <p className="auth-kicker">{mode === "signup" ? "Start your first quest" : "Welcome back"}</p>
+            <h2>{mode === "signup" ? "Create your account" : "Keep your loop moving"}</h2>
+            <p>{mode === "signup" ? "You’ll choose your public handle after confirming your email." : "Sign in to continue your quests and daily streak."}</p>
+          </div>
+
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <label htmlFor="account-email">Email address</label>
+            <input id="account-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" required />
+
+            <label htmlFor="account-password">Password</label>
+            <input id="account-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="At least 8 characters" minLength={8} autoComplete={mode === "signup" ? "new-password" : "current-password"} required />
+
+            <button className="auth-submit" type="submit" disabled={status === "loading"}>
+              {status === "loading" ? "Please wait…" : mode === "signup" ? "Create my account →" : "Sign in →"}
+            </button>
+            <p className={`auth-message ${status}`} aria-live="polite">{message}</p>
+          </form>
+
+          <p className="auth-terms">By continuing, you agree to show up honestly and respect other members’ work.</p>
+        </div>
+      </section>
+    </main>
+  );
+}

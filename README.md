@@ -15,6 +15,15 @@ npm run dev
 
 Open `http://localhost:3000`.
 
+## Supabase
+
+Copy `.env.example` to `.env.local` and add the project URL and browser-safe
+publishable key. Never put a secret key, service-role key, or database password
+in a `NEXT_PUBLIC_` variable.
+
+The shared browser client is available from `lib/supabase.ts` for authentication
+and public app data.
+
 ## Production build
 
 ```bash
