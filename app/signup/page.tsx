@@ -5,6 +5,18 @@ import Link from "next/link";
 
 type Mode = "signup" | "signin";
 
+function withTimeout<T>(promise: PromiseLike<T>, milliseconds = 15000): Promise<T> {
+  return Promise.race([
+    Promise.resolve(promise),
+    new Promise<never>((_resolve, reject) => {
+      window.setTimeout(
+        () => reject(new Error("The account service took too long to respond. Please try again.")),
+        milliseconds,
+      );
+    }),
+  ]);
+}
+
 export default function SignupPage() {
   const [mode, setMode] = useState<Mode>("signup");
   const [email, setEmail] = useState("");
@@ -22,43 +34,43 @@ export default function SignupPage() {
     event.preventDefault();
     setStatus("loading");
     setMessage(mode === "signup" ? "Creating your account…" : "Signing you in…");
-    const { supabase } = await import("../../lib/supabase");
+    try {
+      const { supabase } = await import("../../lib/supabase");
 
-    if (mode === "signup") {
-      const { data, error } = await supabase.auth.signUp({
-        email: email.trim(),
-        password,
-        options: { emailRedirectTo: `${window.location.origin}/onboarding` },
-      });
+      if (mode === "signup") {
+        const { data, error } = await withTimeout(
+          supabase.auth.signUp({
+            email: email.trim(),
+            password,
+            options: { emailRedirectTo: `${window.location.origin}/onboarding` },
+          }),
+        );
 
-      if (error) {
-        setStatus("error");
-        setMessage(error.message);
+        if (error) throw error;
+
+        if (data.session) {
+          window.location.assign("/onboarding");
+          return;
+        }
+
+        setStatus("success");
+        setMessage("Check your inbox and confirm your email to continue.");
         return;
       }
 
-      if (data.session) {
-        window.location.assign("/onboarding");
-        return;
-      }
+      const { error } = await withTimeout(
+        supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        }),
+      );
 
-      setStatus("success");
-      setMessage("Check your inbox and confirm your email to continue.");
-      return;
-    }
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
-
-    if (error) {
+      if (error) throw error;
+      window.location.assign("/onboarding");
+    } catch (error) {
       setStatus("error");
-      setMessage(error.message);
-      return;
+      setMessage(error instanceof Error ? error.message : "Account request failed. Please try again.");
     }
-
-    window.location.assign("/onboarding");
   }
 
   return (
