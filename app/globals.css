@@ -1204,7 +1204,7 @@ footer {
 .cheer-achievement strong { font-size: 11px; letter-spacing: -.01em; }
 .cheer-achievement small { color: #bfc6bc; font-family: var(--font-geist-mono); font-size: 7px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
 .feed-proof-card.celebrating .cheer-achievement { animation: achievement-toast 1.35s cubic-bezier(.2,.8,.2,1) forwards; }
-.community-feed .feed-proof-card.celebrating { z-index: 2; animation: achievement-card 1.25s cubic-bezier(.2,.8,.2,1) forwards; }
+.community-feed .feed-proof-card.celebrating { z-index: 2; opacity: 1 !important; animation: achievement-card 1.25s cubic-bezier(.2,.8,.2,1) forwards; }
 .community-feed .feed-proof-card.celebrating::after {
   content: "";
   position: absolute;
@@ -1222,9 +1222,9 @@ footer {
   100% { transform: scale(1); }
 }
 @keyframes achievement-card {
-  0% { box-shadow: inset 0 0 0 0 rgba(255,112,88,0); background: transparent; }
-  28% { box-shadow: inset 0 0 0 2px rgba(255,112,88,.85), 0 14px 36px rgba(255,112,88,.16); background: color-mix(in srgb, var(--coral) 6%, var(--surface-raised)); }
-  100% { box-shadow: inset 0 0 0 1px rgba(255,112,88,0); background: transparent; }
+  0% { opacity: 1; box-shadow: inset 0 0 0 0 rgba(255,112,88,0); background: transparent; }
+  28% { opacity: 1; box-shadow: inset 0 0 0 2px rgba(255,112,88,.85), 0 14px 36px rgba(255,112,88,.16); background: color-mix(in srgb, var(--coral) 6%, var(--surface-raised)); }
+  100% { opacity: 1; box-shadow: inset 0 0 0 1px rgba(255,112,88,0); background: transparent; }
 }
 @keyframes achievement-sweep {
   0% { transform: translateX(-115%); }
