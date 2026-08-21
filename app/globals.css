@@ -262,6 +262,79 @@ footer > a:last-child { justify-self: end; }
   .quest-picker-account > span { display: none; }
 }
 
+/* Full-bleed navigation refinement */
+.site-header, .dashboard-header, .quest-picker-header, .auth-header {
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 100%;
+  min-height: 76px;
+  margin: 0;
+  background: var(--surface-raised);
+  box-shadow: 0 1px 0 var(--nav-border), 0 8px 28px rgba(23,26,22,.055);
+  backdrop-filter: none;
+}
+[data-theme="dark"] .site-header, [data-theme="dark"] .dashboard-header, [data-theme="dark"] .quest-picker-header, [data-theme="dark"] .auth-header { background: #111511; box-shadow: 0 1px 0 rgba(255,255,255,.1), 0 10px 30px rgba(0,0,0,.28); }
+.site-header nav, .dashboard-header nav {
+  padding: 0;
+  gap: 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.site-header nav > a:not(.nav-cta), .dashboard-header nav > a { border-radius: 8px; }
+.site-header .nav-cta, .dashboard-header .nav-cta { margin-left: 8px; padding-inline: 17px; border-radius: 9px; }
+.theme-toggle { margin-left: 10px; }
+.account-menu { margin-left: 8px; padding-left: 10px; }
+
+/* High-contrast dark surfaces and typography */
+[data-theme="dark"] {
+  --text-muted: #b7beb4;
+}
+[data-theme="dark"] :is(
+  .hero-trust, .how-grid article > span, .feedback-form label span, .account-loading, .account-signin,
+  .settings-card > strong, .avatar-help, .settings-bio-count, .public-identity > strong,
+  .public-identity small, .share-profile-area > a, .public-profile-stats span, .profile-proof-day span,
+  .profile-proof-card > div:last-child, .public-active-quests article > span, .public-active-quests article > small,
+  .public-privacy-note, .profile-no-proofs, .community-momentum > span:last-child, .feed-proof-meta time,
+  .feed-proof-actions span, .dashboard-stats span, .proof-form label span, .quest-picker-intro > p:last-child,
+  .picker-coming-label, .quest-picker-note, .quest-confirm-dialog > p:not(.panel-kicker), .auth-tabs button,
+  .auth-message, .auth-terms, .onboarding-card > p, .handle-input span, .handle-form > p,
+  .onboarding-success small
+) { color: var(--text-muted); }
+[data-theme="dark"] :is(.settings-empty, .public-profile-stats, .dashboard-stats, .community-sparkles span, .community-momentum, .feed-proof-actions button, .onboarding-success > div) {
+  background: var(--surface-raised);
+  color: var(--text);
+  border-color: var(--card-border);
+}
+[data-theme="dark"] :is(.public-privacy-note, .submitted-proof) { background: #202b1b; color: #e0ead8; border-color: #405631; }
+[data-theme="dark"] .submitted-proof > span { color: #bfe98d; }
+[data-theme="dark"] .public-active-quests article > div { background: #343a32; }
+[data-theme="dark"] .feed-proof-meta .feed-quest-tag { border-color: #6f63a8; background: #2d2745; color: #cabfff; }
+[data-theme="dark"] .feed-proof-actions button.cheered { border-color: #bc5d4d; background: #3a2420; color: #ffab9d; }
+[data-theme="dark"] .feed-proof-actions .own-proof-label { background: #28371f; color: #c7ee98; }
+[data-theme="dark"] :is(.settings-message, .dashboard-message, .quest-picker-message, .share-profile-area small) { color: #bfe98d; }
+[data-theme="dark"] :is(.community-message, .auth-message.error) { color: #ff9a88; }
+[data-theme="dark"] .auth-message.success { color: #bfe98d; }
+[data-theme="dark"] input::placeholder, [data-theme="dark"] textarea::placeholder { color: #899187; opacity: 1; }
+
+/* Accent cards always retain dark, sharp text in both themes */
+[data-theme="dark"] :is(.quest-card.coral, .quest-card.violet, .quest-card.lime, .picker-card.coral, .picker-card.violet, .picker-card.lime, .proof-bar, .day-orbit) { color: #171a16; }
+[data-theme="dark"] :is(.quest-card.coral, .quest-card.violet, .quest-card.lime, .picker-card.coral, .picker-card.violet, .picker-card.lime) { border-color: rgba(255,255,255,.18); }
+[data-theme="dark"] :is(.quest-card.suggestion, .picker-suggestion-card, .quest-rules-panel) { color: #f2f4ed; }
+
+@media (max-width: 850px) {
+  .site-header, .dashboard-header, .quest-picker-header, .auth-header { min-height: 70px; }
+  .account-menu, .theme-toggle { margin-left: 4px; }
+}
+
+@media (max-width: 560px) {
+  .site-header, .dashboard-header, .quest-picker-header, .auth-header { min-height: 68px; }
+  .site-header .nav-cta { margin-left: 0; }
+  .account-menu { padding-left: 0; }
+}
+
 /* Public profile */
 .public-profile-page { min-height: 100vh; padding-bottom: 80px; background: var(--paper); }
 .profile-loading { display: grid; place-items: center; }
