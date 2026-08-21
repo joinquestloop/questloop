@@ -1081,3 +1081,70 @@ footer {
 [data-theme="dark"] .feedback-form button:hover, [data-theme="dark"] .auth-submit:hover { background: var(--lime); color: #171a16; }
 [data-theme="dark"] footer { background: #090b09; color: #abb2a8; }
 [data-theme="dark"] footer .footer-brand { color: #ffffff; }
+
+/* Celebratory, professional cheer interaction */
+.feed-proof-actions .cheer-button {
+  position: relative;
+  min-width: 126px;
+  min-height: 46px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  overflow: visible;
+  border: 1px solid #d8dad4;
+  border-radius: 13px;
+  background: var(--surface-raised);
+  color: var(--text);
+  box-shadow: 0 5px 14px rgba(23,26,22,.08);
+  cursor: pointer;
+  isolation: isolate;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.feed-proof-actions .cheer-button:hover { transform: translateY(-2px); border-color: #ff9c8b; background: #fff6f3; color: #b93623; box-shadow: 0 9px 22px rgba(255,112,88,.18); }
+.feed-proof-actions .cheer-button:active { transform: translateY(0) scale(.94); }
+.feed-proof-actions .cheer-button .cheer-heart { color: var(--coral); font-family: inherit; font-size: 22px; line-height: 1; }
+.feed-proof-actions .cheer-button .cheer-label { color: inherit; font-family: inherit; font-size: 12px; font-weight: 850; letter-spacing: -.01em; }
+.feed-proof-actions .cheer-button.cheered { border-color: #ff8f7c; background: linear-gradient(135deg, #ff7861, #ff9b88); color: #171a16; box-shadow: 0 9px 24px rgba(255,112,88,.3); animation: cheer-celebrate .58s cubic-bezier(.18,.9,.32,1.3); }
+.feed-proof-actions .cheer-button.cheered::before { content: ""; position: absolute; z-index: -1; inset: -1px; border: 2px solid var(--coral); border-radius: 14px; animation: cheer-ring .75s ease-out forwards; pointer-events: none; }
+.feed-proof-actions .cheer-button.cheered .cheer-heart { color: #171a16; animation: cheer-heartbeat .7s ease-out; }
+.cheer-particles { position: absolute; z-index: 4; inset: 0; pointer-events: none; }
+.feed-proof-actions .cheer-particles i { position: absolute; left: 50%; top: 45%; color: var(--coral); font-family: inherit; font-size: 11px; font-style: normal; font-weight: 900; opacity: 0; }
+.feed-proof-actions .cheered .cheer-particles i:nth-child(1) { --cheer-x: -48px; --cheer-y: -42px; animation: cheer-particle .75s .02s ease-out forwards; }
+.feed-proof-actions .cheered .cheer-particles i:nth-child(2) { --cheer-x: -28px; --cheer-y: -58px; animation: cheer-particle .72s .08s ease-out forwards; }
+.feed-proof-actions .cheered .cheer-particles i:nth-child(3) { --cheer-x: 8px; --cheer-y: -60px; animation: cheer-particle .78s .04s ease-out forwards; }
+.feed-proof-actions .cheered .cheer-particles i:nth-child(4) { --cheer-x: 39px; --cheer-y: -42px; animation: cheer-particle .7s .1s ease-out forwards; }
+.feed-proof-actions .cheered .cheer-particles i:nth-child(5) { --cheer-x: 52px; --cheer-y: -12px; animation: cheer-particle .74s .05s ease-out forwards; }
+[data-theme="dark"] .feed-proof-actions .cheer-button { border-color: #3d463b; background: #1d221d; color: #f2f4ed; box-shadow: 0 6px 18px rgba(0,0,0,.22); }
+[data-theme="dark"] .feed-proof-actions .cheer-button:hover { border-color: #bc6657; background: #2e211e; color: #ffab9d; }
+[data-theme="dark"] .feed-proof-actions .cheer-button.cheered { border-color: #ff8f7c; background: linear-gradient(135deg, #ff7861, #ff9b88); color: #171a16; }
+.feed-proof-actions > span:not(.feed-open-profile):not(.own-proof-label) { font-size: 10px; font-weight: 750; }
+
+@keyframes cheer-celebrate {
+  0% { transform: scale(.78); }
+  48% { transform: scale(1.14) rotate(-2deg); }
+  72% { transform: scale(.98) rotate(1deg); }
+  100% { transform: scale(1); }
+}
+@keyframes cheer-heartbeat {
+  0%, 100% { transform: scale(1); }
+  35% { transform: scale(1.5) rotate(-8deg); }
+  65% { transform: scale(1.08) rotate(4deg); }
+}
+@keyframes cheer-ring {
+  0% { opacity: .8; transform: scale(.9); }
+  100% { opacity: 0; transform: scale(1.45); }
+}
+@keyframes cheer-particle {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+  22% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--cheer-x)), calc(-50% + var(--cheer-y))) scale(1.15) rotate(18deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feed-proof-actions .cheer-button.cheered,
+  .feed-proof-actions .cheer-button.cheered::before,
+  .feed-proof-actions .cheer-button.cheered .cheer-heart,
+  .feed-proof-actions .cheered .cheer-particles i { animation: none; }
+}

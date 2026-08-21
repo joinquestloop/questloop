@@ -214,8 +214,10 @@ export default function CommunityPage() {
                     {isMine ? (
                       <span className="own-proof-label">✓ Your update</span>
                     ) : (
-                      <button type="button" className={hasCheered ? "cheered" : ""} onClick={() => toggleCheer(proof)} disabled={updatingProofId === proof.id}>
-                        {hasCheered ? "♥ Cheered" : "♡ Cheer"}
+                      <button type="button" className={`cheer-button ${hasCheered ? "cheered" : ""}`} onClick={() => toggleCheer(proof)} disabled={updatingProofId === proof.id} aria-label={hasCheered ? "Remove your cheer" : "Cheer this progress update"}>
+                        <span className="cheer-heart" aria-hidden="true">{hasCheered ? "♥" : "♡"}</span>
+                        <span className="cheer-label">{hasCheered ? "Cheered!" : "Cheer"}</span>
+                        <span className="cheer-particles" aria-hidden="true"><i>✦</i><i>♥</i><i>＋1</i><i>✦</i><i>♥</i></span>
                       </button>
                     )}
                     <span>{cheerCounts[proof.id] ?? 0} cheers</span>
