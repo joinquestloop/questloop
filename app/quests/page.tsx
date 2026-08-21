@@ -17,10 +17,14 @@ export default function QuestsPage() {
   const [quests, setQuests] = useState<Quest[]>([]);
   const [joinedQuestIds, setJoinedQuestIds] = useState<Set<string>>(new Set());
   const [userId, setUserId] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [joiningId, setJoiningId] = useState<string | null>(null);
   const [pendingQuest, setPendingQuest] = useState<Quest | null>(null);
   const [message, setMessage] = useState("");
+  const [questSuggestion, setQuestSuggestion] = useState("");
+  const [suggesting, setSuggesting] = useState(false);
+  const [suggestionMessage, setSuggestionMessage] = useState("");
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -47,6 +51,7 @@ export default function QuestsPage() {
 
       if (!active) return;
       setUserId(authData.user?.id ?? null);
+      setUserEmail(authData.user?.email ?? null);
 
       if (questError) {
         setMessage(questError.message);
@@ -129,6 +134,35 @@ export default function QuestsPage() {
     void joinQuest(quest);
   }
 
+  async function submitQuestSuggestion(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const suggestion = questSuggestion.trim();
+    if (suggestion.length < 3) {
+      setSuggestionMessage("Please enter a quest idea.");
+      return;
+    }
+
+    setSuggesting(true);
+    setSuggestionMessage("Sending your idea…");
+
+    try {
+      const { supabase } = await import("../../lib/supabase");
+      const { error } = await supabase.from("feedback").insert({
+        message: `Quest suggestion: ${suggestion}`,
+        email: userEmail,
+        page_url: `${window.location.origin}/quests`,
+      });
+      if (error) throw error;
+
+      setQuestSuggestion("");
+      setSuggestionMessage("Thanks—your quest idea is in the loop!");
+    } catch {
+      setSuggestionMessage("We couldn’t send that idea. Please try again.");
+    } finally {
+      setSuggesting(false);
+    }
+  }
+
   return (
     <main className="choose-quest-page">
       <header className="quest-picker-header">
@@ -179,6 +213,27 @@ export default function QuestsPage() {
               </article>
             );
           })}
+
+          <article className="picker-card picker-coming-soon">
+            <div className="picker-card-top"><span>Next</span><span>In progress</span></div>
+            <div className="picker-symbol" aria-hidden="true">＋</div>
+            <h2>More quests coming soon.</h2>
+            <p>New paths for learning, building, health, creativity, and personal growth are being prepared.</p>
+            <div className="picker-coming-label">Stay in the loop ✦</div>
+          </article>
+
+          <article className="picker-card picker-suggestion-card">
+            <div className="picker-card-top"><span>Your turn</span><span>Shape QuestLoop</span></div>
+            <div className="picker-symbol" aria-hidden="true">?</div>
+            <h2>What quest do you want?</h2>
+            <p>Tell us what you would commit to completing next.</p>
+            <form className="quest-suggestion-form" onSubmit={submitQuestSuggestion}>
+              <label className="visually-hidden" htmlFor="quest-suggestion">Your quest idea</label>
+              <input id="quest-suggestion" value={questSuggestion} onChange={(event) => setQuestSuggestion(event.target.value)} maxLength={200} placeholder="e.g. 30 Days of Fitness" required />
+              <button type="submit" disabled={suggesting}>{suggesting ? "Sending…" : "Suggest this quest →"}</button>
+            </form>
+            <p className="quest-suggestion-message" aria-live="polite">{suggestionMessage}</p>
+          </article>
         </section>
       )}
 

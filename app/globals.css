@@ -384,6 +384,18 @@ footer > a:last-child { justify-self: end; }
 .picker-card-action { position: absolute; z-index: 2; inset: 0; width: 100%; border: 0; background: transparent; cursor: pointer; }
 .picker-card-action:focus { outline: 0; }
 .picker-card-action:disabled { cursor: wait; }
+.picker-coming-soon { background: #e7e4dc; border-style: dashed; }
+.picker-coming-soon:hover, .picker-suggestion-card:hover { transform: none; box-shadow: none; }
+.picker-coming-soon:hover .picker-symbol, .picker-suggestion-card:hover .picker-symbol { transform: none; }
+.picker-coming-label { margin-top: auto; padding-top: 16px; border-top: 1px solid #aeb1aa; color: #676b63; font-family: var(--font-geist-mono); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.picker-suggestion-card { background: var(--ink); color: white; }
+.picker-suggestion-card > p { color: #c0c4bc; }
+.quest-suggestion-form { margin-top: auto; padding-top: 26px; }
+.quest-suggestion-form input { width: 100%; padding: 13px 14px; border: 1px solid #70756c; border-radius: 3px; background: #292d28; color: white; outline: 0; }
+.quest-suggestion-form input:focus { border-color: var(--lime); box-shadow: 0 0 0 2px rgba(200,241,105,.2); }
+.quest-suggestion-form button { width: 100%; margin-top: 9px; padding: 13px 14px; border: 0; border-radius: 3px; background: var(--lime); color: var(--ink); cursor: pointer; font-weight: 800; text-align: left; }
+.quest-suggestion-form button:disabled { cursor: wait; opacity: .65; }
+.quest-suggestion-message { min-height: 18px; margin-top: 10px !important; color: var(--lime) !important; font-size: 10px !important; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .quest-picker-status, .quest-picker-message, .quest-picker-note { max-width: 1176px; margin: 0 auto; }
 .quest-picker-status { padding: 40px 0; font-size: 17px; }
