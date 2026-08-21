@@ -16,14 +16,17 @@ for (const route of ["/", "/signup", "/onboarding"]) {
     { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
     { waitUntil() {}, passThroughOnException() {} },
   );
+  const html = await response.text();
 
   if (!response.ok) {
-    throw new Error(`Static export of ${route} failed with status ${response.status}`);
+    throw new Error(
+      `Static export of ${route} failed with status ${response.status}: ${html.slice(0, 2000)}`,
+    );
   }
 
   const directory = route === "/" ? output : new URL(`.${route}/`, output);
   await mkdir(directory, { recursive: true });
-  await writeFile(new URL("index.html", directory), await response.text());
+  await writeFile(new URL("index.html", directory), html);
 }
 
 console.log("Static Cloudflare Pages export written to dist/pages");
