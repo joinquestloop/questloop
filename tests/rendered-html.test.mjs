@@ -25,6 +25,8 @@ test("server-renders the QuestLoop landing page", async () => {
   assert.match(html, /Build Your First SaaS/);
   assert.match(html, /30 Days of DSA/);
   assert.match(html, /Join early access/);
+  assert.match(html, /Sign in/);
+  assert.match(html, /Start a quest/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 

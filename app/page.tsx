@@ -80,7 +80,8 @@ export default function Home() {
         </a>
         <nav aria-label="Main navigation">
           <a href="#quests">Explore quests</a>
-          <a className="nav-cta" href="#early-access">Join early access</a>
+          <a href="/signup?mode=signin">Sign in</a>
+          <a className="nav-cta" href="/signup">Start a quest</a>
         </nav>
       </header>
 

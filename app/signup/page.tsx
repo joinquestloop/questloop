@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-html-link-for-pages */
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 type Mode = "signup" | "signin";
 
@@ -23,6 +23,13 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("mode") === "signin") {
+      const timer = window.setTimeout(() => setMode("signin"), 0);
+      return () => window.clearTimeout(timer);
+    }
+  }, []);
 
   function switchMode(nextMode: Mode) {
     setMode(nextMode);
