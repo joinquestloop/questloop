@@ -164,26 +164,31 @@ export default function CommunityPage() {
         <nav><a href="/quest">My quest</a><a href="/quests">Discover quests</a><AccountMenu /><ThemeToggle /></nav>
       </header>
 
-      <section className="community-intro">
-        <div className="community-sparkles" aria-hidden="true"><span>✦</span><span>♥</span><span>✓</span><span>＋1</span></div>
-        <p className="eyebrow"><span /> Community · Progress together</p>
-        <h1>Show up.<br /><em>Cheer each other on.</em></h1>
-        <p>{quest ? `Public progress from members of ${quest.title}.` : "See what your quest community is building and learning."}</p>
-        {quest && !loading && (
-          <div className="community-momentum"><span>✦</span><strong>{proofs.length} progress moments</strong><span>shared by your quest community</span></div>
-        )}
+      <section className="community-masthead">
+        <div>
+          <p className="eyebrow"><span /> Community</p>
+          <h1>Progress, shared.</h1>
+          <p>{quest ? `The latest from people showing up for ${quest.title}.` : "Real updates from people building better habits together."}</p>
+        </div>
+        {quest && !loading && <a className="community-share-cta" href="/quest">Share today’s progress <span>＋</span></a>}
       </section>
 
-      {loading ? (
-        <p className="community-status">Loading community progress…</p>
-      ) : !userId ? (
-        <section className="quest-picker-empty"><h2>Sign in to see your quest community.</h2><a className="auth-submit link-button" href="/signup">Go to sign in →</a></section>
-      ) : !quest ? (
-        <section className="quest-picker-empty"><h2>Join a quest to unlock its community.</h2><a className="auth-submit link-button" href="/quests">Explore quests →</a></section>
-      ) : proofs.length === 0 ? (
-        <section className="quest-picker-empty"><h2>No public updates yet.</h2><p>Be the first member to share progress with this quest.</p><a className="auth-submit link-button" href="/quest">Share today’s progress →</a></section>
-      ) : (
-        <section className="community-feed" aria-label={`${quest.title} public progress updates`}>
+      <div className="community-layout">
+        <div className="community-stream">
+          <div className="community-stream-header">
+            <div><strong>Latest updates</strong><span>{quest ? quest.title : "Your quest community"}</span></div>
+            {quest && !loading && <span className="community-live"><i /> {proofs.length} updates</span>}
+          </div>
+          {loading ? (
+            <p className="community-status">Loading community progress…</p>
+          ) : !userId ? (
+            <section className="community-empty"><span className="community-empty-icon">◎</span><h2>Your community is waiting.</h2><p>Sign in to see progress from people taking the same quest as you.</p><a href="/signup?mode=signin">Sign in to QuestLoop →</a></section>
+          ) : !quest ? (
+            <section className="community-empty"><span className="community-empty-icon">↗</span><h2>Choose a quest first.</h2><p>Your feed is shaped around people pursuing the same goal.</p><a href="/quests">Explore quests →</a></section>
+          ) : proofs.length === 0 ? (
+            <section className="community-empty"><span className="community-empty-icon">＋</span><h2>Start the conversation.</h2><p>Be the first person in this quest to share a progress update.</p><a href="/quest">Share today’s progress →</a></section>
+          ) : (
+            <section className="community-feed" aria-label={`${quest.title} public progress updates`}>
           {proofs.map((proof, index) => {
             const isMine = proof.user_id === userId;
             const hasCheered = myCheers.has(proof.id);
@@ -220,8 +225,28 @@ export default function CommunityPage() {
               </article>
             );
           })}
-        </section>
-      )}
+            </section>
+          )}
+        </div>
+
+        <aside className="community-sidebar">
+          <section className="community-side-card community-side-highlight">
+            <span className="side-icon">✦</span>
+            <p className="panel-kicker">QuestLoop community</p>
+            <h2>Built for momentum, not popularity.</h2>
+            <p>Share honest progress, cheer useful work, and keep moving with people on the same path.</p>
+          </section>
+          <section className="community-side-card">
+            <div className="side-card-title"><strong>Community values</strong><span>03</span></div>
+            <ul className="community-values">
+              <li><span>01</span><div><strong>Progress over perfection</strong><small>Small updates count.</small></div></li>
+              <li><span>02</span><div><strong>Encouragement over metrics</strong><small>Cheer the effort.</small></div></li>
+              <li><span>03</span><div><strong>People over algorithms</strong><small>Your quest shapes the feed.</small></div></li>
+            </ul>
+          </section>
+          <a className="community-discover-card" href="/quests"><span>Discover another path</span><strong>Explore quests</strong><b>→</b></a>
+        </aside>
+      </div>
 
       <p className="community-message" aria-live="polite">{message}</p>
     </main>
