@@ -2,7 +2,6 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { supabase } from "../../lib/supabase";
 
 type Mode = "signup" | "signin";
 
@@ -23,6 +22,7 @@ export default function SignupPage() {
     event.preventDefault();
     setStatus("loading");
     setMessage(mode === "signup" ? "Creating your account…" : "Signing you in…");
+    const { supabase } = await import("../../lib/supabase");
 
     if (mode === "signup") {
       const { data, error } = await supabase.auth.signUp({

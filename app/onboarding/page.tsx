@@ -3,7 +3,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import Link from "next/link";
-import { supabase } from "../../lib/supabase";
 
 const HANDLE_PATTERN = /^[a-z0-9_]{3,20}$/;
 
@@ -15,18 +14,31 @@ export default function OnboardingPage() {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-      setHandle((data.user?.user_metadata.handle as string | undefined) ?? "");
-      setLoading(false);
+    let active = true;
+    let unsubscribe: (() => void) | undefined;
+
+    import("../../lib/supabase").then(({ supabase }) => {
+      if (!active) return;
+
+      supabase.auth.getUser().then(({ data }) => {
+        if (!active) return;
+        setUser(data.user);
+        setHandle((data.user?.user_metadata.handle as string | undefined) ?? "");
+        setLoading(false);
+      });
+
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (!active) return;
+        setUser(session?.user ?? null);
+        setLoading(false);
+      });
+      unsubscribe = () => data.subscription.unsubscribe();
     });
 
-    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => data.subscription.unsubscribe();
+    return () => {
+      active = false;
+      unsubscribe?.();
+    };
   }, []);
 
   async function saveHandle(event: FormEvent<HTMLFormElement>) {
@@ -39,6 +51,7 @@ export default function OnboardingPage() {
     }
 
     setMessage("Saving your handle…");
+    const { supabase } = await import("../../lib/supabase");
     const { error } = await supabase.auth.updateUser({ data: { handle: normalized } });
 
     if (error) {
