@@ -108,7 +108,7 @@ export default function SignupPage() {
         <div className="auth-story">
           <p className="eyebrow"><span /> Your first step</p>
           <h1>Make progress<br /><em>visible.</em></h1>
-          <p>Join a quest, show up consistently, and build a portfolio of proof—one day at a time.</p>
+          <p>Join a quest, show up consistently, and build a portfolio of progress—one day at a time.</p>
           <div className="auth-loop" aria-label="QuestLoop account journey">
             <span className="active">1</span><i /><span>2</span><i /><span>3</span>
           </div>

@@ -180,9 +180,9 @@ export default function CommunityPage() {
       ) : !quest ? (
         <section className="quest-picker-empty"><h2>Join a quest to unlock its community.</h2><a className="auth-submit link-button" href="/quests">Explore quests →</a></section>
       ) : proofs.length === 0 ? (
-        <section className="quest-picker-empty"><h2>No public proofs yet.</h2><p>Be the first member to share progress with this quest.</p><a className="auth-submit link-button" href="/quest">Submit today’s proof →</a></section>
+        <section className="quest-picker-empty"><h2>No public updates yet.</h2><p>Be the first member to share progress with this quest.</p><a className="auth-submit link-button" href="/quest">Share today’s progress →</a></section>
       ) : (
-        <section className="community-feed" aria-label={`${quest.title} public proofs`}>
+        <section className="community-feed" aria-label={`${quest.title} public progress updates`}>
           {proofs.map((proof, index) => {
             const isMine = proof.user_id === userId;
             const hasCheered = myCheers.has(proof.id);
@@ -202,11 +202,11 @@ export default function CommunityPage() {
                     <time dateTime={proof.submitted_at}>{new Date(proof.submitted_at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</time>
                   </div>
                   <p>{proof.progress_text}</p>
-                  {imageUrls[proof.id] && <img className="feed-proof-image" src={imageUrls[proof.id]} alt={`Day ${proof.quest_day} proof by ${handles[proof.user_id] || "a QuestLoop member"}`} />}
-                  {proof.proof_url && <a href={proof.proof_url} target="_blank" rel="noreferrer">View proof ↗</a>}
+                  {imageUrls[proof.id] && <img className="feed-proof-image" src={imageUrls[proof.id]} alt={`Day ${proof.quest_day} update by ${handles[proof.user_id] || "a QuestLoop member"}`} />}
+                  {proof.proof_url && <a href={proof.proof_url} target="_blank" rel="noreferrer">View progress link ↗</a>}
                   <div className="feed-proof-actions">
                     {isMine ? (
-                      <span className="own-proof-label">✓ Your proof</span>
+                      <span className="own-proof-label">✓ Your update</span>
                     ) : (
                       <button type="button" className={hasCheered ? "cheered" : ""} onClick={() => toggleCheer(proof)} disabled={updatingProofId === proof.id}>
                         {hasCheered ? "♥ Cheered" : "♡ Cheer"}

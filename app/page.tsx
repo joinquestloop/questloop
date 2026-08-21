@@ -6,7 +6,7 @@ const quests = [
     title: "100 Days of Code",
     description: "Build a daily coding habit and share one small win every day.",
     duration: "100 days",
-    rhythm: "Daily proof",
+    rhythm: "Daily check-in",
     color: "coral",
   },
   {
@@ -49,7 +49,7 @@ export default function Home() {
           <p className="eyebrow"><span /> Social accountability for real progress</p>
           <h1>Turn intentions into<br /><em>visible progress.</em></h1>
           <p className="hero-lede">
-            Join people working toward the same goal, share proof of what you did, and build momentum one meaningful day at a time.
+            Join people working toward the same goal, share what you did, and build momentum one meaningful day at a time.
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="/signup">Create free account <span>↗</span></a>
@@ -73,13 +73,13 @@ export default function Home() {
             <div className="progress-track"><span /></div>
             <div className="progress-meta"><span>24% complete</span><span>24 day streak 🔥</span></div>
           </div>
-          <div className="proof-chip proof-one"><span>✓</span> Proof shared</div>
+          <div className="proof-chip proof-one"><span>✓</span> Progress shared</div>
           <div className="proof-chip proof-two"><span>♥</span> Community cheer</div>
         </div>
       </section>
 
       <section className="proof-bar" aria-label="How QuestLoop works">
-        <p>Join a quest</p><span>→</span><p>Do the work</p><span>→</span><p>Share proof</p><span>→</span><p>Cheer progress</p><span>→</span><p>Keep going</p>
+        <p>Join a quest</p><span>→</span><p>Do the work</p><span>→</span><p>Share progress</p><span>→</span><p>Cheer progress</p><span>→</span><p>Keep going</p>
       </section>
 
       <section className="how-section" id="how-it-works">
@@ -89,7 +89,7 @@ export default function Home() {
         </div>
         <div className="how-grid">
           <article><span>01</span><div className="how-icon">◎</div><h3>Choose one quest</h3><p>Make one clear commitment instead of collecting goals you never start.</p></article>
-          <article><span>02</span><div className="how-icon">✓</div><h3>Share meaningful proof</h3><p>Post what you built, learned, practiced, or improved—without chasing vanity metrics.</p></article>
+          <article><span>02</span><div className="how-icon">✓</div><h3>Share meaningful progress</h3><p>Post what you built, learned, practiced, or improved—without chasing vanity metrics.</p></article>
           <article><span>03</span><div className="how-icon">♥</div><h3>Progress with people</h3><p>See members on the same journey, cheer their work, and return for your next day.</p></article>
         </div>
       </section>
@@ -143,14 +143,14 @@ export default function Home() {
         <div className="community-preview-copy">
           <p className="eyebrow light"><span /> Built around encouragement</p>
           <h2>Your work becomes<br /><em>your social profile.</em></h2>
-          <p>Every public proof adds to a portfolio of consistency. Community posts connect back to real people, real quests, and visible progress.</p>
+          <p>Every public update adds to a portfolio of consistency. Community posts connect back to real people, real quests, and visible progress.</p>
           <a href="/signup">Join the community <span>→</span></a>
         </div>
         <div className="social-preview" aria-label="Example QuestLoop community posts">
           <article className="social-preview-card featured">
             <div className="social-preview-meta"><span className="preview-avatar lime">A</span><div><strong>Alex</strong><small>100 Days of Code · Day 18</small></div><b>Preview</b></div>
             <p>Finished the responsive dashboard and documented what I learned about grid layouts.</p>
-            <div className="preview-proof">✓ Proof shared <span>♡ Cheer</span></div>
+            <div className="preview-proof">✓ Progress shared <span>♡ Cheer</span></div>
           </article>
           <article className="social-preview-card offset">
             <div className="social-preview-meta"><span className="preview-avatar violet">M</span><div><strong>Maya</strong><small>Build Your First SaaS · Week 2</small></div></div>

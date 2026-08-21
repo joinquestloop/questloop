@@ -209,22 +209,22 @@ export default function PublicProfilePage() {
       </section>
 
       <section className="public-profile-stats">
-        <div><strong>{proofs.length}</strong><span>public proofs</span></div>
+        <div><strong>{proofs.length}</strong><span>public updates</span></div>
         <div><strong>{totalCheers}</strong><span>cheers received</span></div>
         <div><strong>{quests.length}</strong><span>active quests</span></div>
       </section>
 
       <section className="public-profile-grid">
         <div className="public-proof-list">
-          <div className="profile-section-title"><p className="panel-kicker">Proof portfolio</p><h2>Progress made visible.</h2></div>
+          <div className="profile-section-title"><p className="panel-kicker">Progress portfolio</p><h2>Progress made visible.</h2></div>
           {proofs.length ? proofs.map((proof) => (
             <article className="profile-proof-card" key={proof.id}>
               <div className="profile-proof-day"><strong>Day {proof.quest_day}</strong><span>{questNames[proof.quest_id] || "Quest"}</span></div>
               <p>{proof.progress_text}</p>
-              {imageUrls[proof.id] && <img className="profile-proof-image" src={imageUrls[proof.id]} alt={`Day ${proof.quest_day} public proof`} />}
-              <div>{proof.proof_url ? <a href={proof.proof_url} target="_blank" rel="noreferrer">View proof ↗</a> : <span>Progress update</span>}<strong>♥ {proof.cheerCount}</strong></div>
+              {imageUrls[proof.id] && <img className="profile-proof-image" src={imageUrls[proof.id]} alt={`Day ${proof.quest_day} progress update`} />}
+              <div>{proof.proof_url ? <a href={proof.proof_url} target="_blank" rel="noreferrer">View progress link ↗</a> : <span>Progress update</span>}<strong>♥ {proof.cheerCount}</strong></div>
             </article>
-          )) : <div className="profile-no-proofs">No public proofs have been shared yet.</div>}
+          )) : <div className="profile-no-proofs">No public progress updates have been shared yet.</div>}
         </div>
 
         <aside className="public-active-quests">
@@ -232,9 +232,9 @@ export default function PublicProfilePage() {
           <h2>Currently showing up for</h2>
           {quests.map((quest) => {
             const completion = Math.round((quest.proofCount / quest.duration_days) * 100);
-            return <article key={quest.id}><strong>{quest.title}</strong><span>{quest.proofCount} of {quest.duration_days} proofs</span><div><i style={{ width: `${completion}%` }} /></div><small>{completion}% complete</small></article>;
+            return <article key={quest.id}><strong>{quest.title}</strong><span>{quest.proofCount} of {quest.duration_days} updates</span><div><i style={{ width: `${completion}%` }} /></div><small>{completion}% complete</small></article>;
           })}
-          <p className="public-privacy-note">Only proofs @{profile.handle} chose to make public are shown here.</p>
+          <p className="public-privacy-note">Only updates @{profile.handle} chose to make public are shown here.</p>
         </aside>
       </section>
     </main>

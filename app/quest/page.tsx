@@ -123,14 +123,14 @@ export default function QuestDashboardPage() {
     if (!membership || !userId || !quest || todayProof) return;
 
     setSubmitting(true);
-    setMessage("Submitting your proof…");
+    setMessage("Sharing your progress…");
     let uploadedPath: string | null = null;
 
     try {
       const { supabase } = await import("../../lib/supabase");
       if (proofImage) {
         if (!["image/jpeg", "image/png", "image/webp"].includes(proofImage.type)) throw new Error("Upload a PNG, JPEG or WebP image.");
-        if (proofImage.size > 5 * 1024 * 1024) throw new Error("The proof image must be 5 MB or smaller.");
+        if (proofImage.size > 5 * 1024 * 1024) throw new Error("The progress image must be 5 MB or smaller.");
         const extension = proofImage.name.split(".").pop()?.toLowerCase() || "jpg";
         uploadedPath = `${userId}/${membership.id}/day-${currentDay}-${crypto.randomUUID()}.${extension}`;
         const { error: uploadError } = await supabase.storage.from("proof-images").upload(uploadedPath, proofImage, { contentType: proofImage.type, upsert: false });
@@ -161,13 +161,13 @@ export default function QuestDashboardPage() {
       setProgressText("");
       setProofUrl("");
       setProofImage(null);
-      setMessage(`Day ${currentDay} complete. Your proof is now part of your progress.`);
+      setMessage(`Day ${currentDay} complete. Your update is now part of your progress.`);
     } catch (error) {
       if (uploadedPath) {
         const { supabase } = await import("../../lib/supabase");
         await supabase.storage.from("proof-images").remove([uploadedPath]);
       }
-      setMessage(error instanceof Error ? error.message : "Your proof could not be submitted.");
+      setMessage(error instanceof Error ? error.message : "Your progress update could not be shared.");
     } finally {
       setSubmitting(false);
     }
@@ -203,29 +203,29 @@ export default function QuestDashboardPage() {
 
       <section className="dashboard-stats">
         <div><strong>{completion}%</strong><span>complete</span></div>
-        <div><strong>{proofs.length}</strong><span>proofs shared</span></div>
-        <div><strong>{quest.proof_rhythm}</strong><span>commitment</span></div>
+        <div><strong>{proofs.length}</strong><span>updates shared</span></div>
+        <div><strong>{quest.proof_rhythm.replace(/proof/gi, "check-in")}</strong><span>commitment</span></div>
         <div><strong>Day 1</strong><span>personal start</span></div>
       </section>
 
       <section className="dashboard-grid">
         <div className="proof-panel">
           <p className="panel-kicker">Today’s check-in</p>
-          <h2>{todayProof ? `Day ${currentDay} is complete.` : `Share your Day ${currentDay} proof.`}</h2>
+          <h2>{todayProof ? `Day ${currentDay} is complete.` : `Share your Day ${currentDay} progress.`}</h2>
           {todayProof ? (
             <article className="submitted-proof">
-              <span>✓ Proof submitted</span>
+              <span>✓ Progress shared</span>
               <p>{todayProof.progress_text}</p>
-              {imageUrls[todayProof.id] && <img className="proof-image" src={imageUrls[todayProof.id]} alt={`Day ${todayProof.quest_day} proof`} />}
-              {todayProof.proof_url && <a href={todayProof.proof_url} target="_blank" rel="noreferrer">Open proof link ↗</a>}
+              {imageUrls[todayProof.id] && <img className="proof-image" src={imageUrls[todayProof.id]} alt={`Day ${todayProof.quest_day} progress update`} />}
+              {todayProof.proof_url && <a href={todayProof.proof_url} target="_blank" rel="noreferrer">Open progress link ↗</a>}
             </article>
           ) : (
             <form className="proof-form" onSubmit={submitProof}>
               <label htmlFor="progress">What progress did you make?</label>
               <textarea id="progress" value={progressText} onChange={(event) => setProgressText(event.target.value)} placeholder="Today I learned, built, solved or improved…" maxLength={1000} required />
-              <label htmlFor="proof-url">Proof link <span>optional</span></label>
+              <label htmlFor="proof-url">Progress link <span>optional</span></label>
               <input id="proof-url" type="url" value={proofUrl} onChange={(event) => setProofUrl(event.target.value)} placeholder="https://github.com/…" />
-              <label htmlFor="proof-image">Proof image <span>optional · PNG, JPEG or WebP · max 5 MB</span></label>
+              <label htmlFor="proof-image">Progress image <span>optional · PNG, JPEG or WebP · max 5 MB</span></label>
               <input id="proof-image" className="proof-file-input" type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => setProofImage(event.target.files?.[0] ?? null)} />
               <label htmlFor="visibility">Who can see this?</label>
               <select id="visibility" value={visibility} onChange={(event) => setVisibility(event.target.value)}>
@@ -243,7 +243,7 @@ export default function QuestDashboardPage() {
           <h2>Keep the loop honest.</h2>
           <ol>
             <li><span>01</span>Make meaningful progress.</li>
-            <li><span>02</span>Share proof from your own work.</li>
+            <li><span>02</span>Share progress from your own work.</li>
             <li><span>03</span>Respect copyright and privacy.</li>
             <li><span>04</span>Missed a day? Return without shame.</li>
           </ol>

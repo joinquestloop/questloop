@@ -115,7 +115,7 @@ export default function OnboardingPage() {
         <a className="brand onboarding-brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
         <span className="step-badge">Step 2 of 3</span>
         <h1>{saved ? "You’re ready to begin." : "Choose your public handle."}</h1>
-        <p>{saved ? "Next, you’ll choose your first quest and submit Day 1 proof." : "This becomes your shareable QuestLoop profile address."}</p>
+        <p>{saved ? "Next, you’ll choose your first quest and share your Day 1 progress." : "This becomes your shareable QuestLoop profile address."}</p>
 
         {!saved ? (
           <form className="handle-form" onSubmit={saveHandle}>

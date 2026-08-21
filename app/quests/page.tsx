@@ -212,7 +212,7 @@ export default function QuestsPage() {
                 <div className="picker-symbol" aria-hidden="true">{index === 0 ? "{ }" : index === 1 ? "↗" : "#"}</div>
                 <h2>{quest.title}</h2>
                 <p>{quest.description}</p>
-                <div className="picker-details"><span>{quest.proof_rhythm}</span><span>Start at Day 1</span></div>
+                <div className="picker-details"><span>{quest.proof_rhythm.replace(/proof/gi, "check-in")}</span><span>Start at Day 1</span></div>
                 <span className="picker-action-text" aria-hidden="true">
                   {joined ? "Open quest →" : joiningId === quest.id ? "Joining…" : anotherQuestIsActive ? "One active quest at a time →" : "Choose this quest →"}
                 </span>
@@ -266,7 +266,7 @@ export default function QuestsPage() {
           >
             <p className="panel-kicker">Ready for Day 1?</p>
             <h2 id="quest-confirm-title">Join {pendingQuest.title}?</h2>
-            <p>Your journey will start at Day 1 today. You can move at your own pace and share proof as you progress.</p>
+            <p>Your journey will start at Day 1 today. You can move at your own pace and share progress along the way.</p>
             <div className="quest-confirm-actions">
               <button type="button" onClick={() => setPendingQuest(null)}>Not now</button>
               <button ref={confirmButtonRef} type="button" onClick={confirmQuest}>Yes, join this quest →</button>

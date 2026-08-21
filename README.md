@@ -2,7 +2,7 @@
 
 The first landing page for [questloop.app](https://questloop.app).
 
-> Join a quest. Make progress. Share proof. Repeat.
+> Join a quest. Make progress. Share it. Repeat.
 
 ## Run locally
 
