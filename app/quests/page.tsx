@@ -1,7 +1,7 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages */
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 type Quest = {
   id: string;
@@ -96,10 +96,10 @@ export default function QuestsPage() {
   return (
     <main className="choose-quest-page">
       <header className="quest-picker-header">
-        <Link className="brand" href="/" aria-label="QuestLoop home">
+        <a className="brand" href="/" aria-label="QuestLoop home">
           <span className="brand-mark" aria-hidden="true">Q</span>
           <span>QuestLoop</span>
-        </Link>
+        </a>
         <span>Step 3 of 3</span>
       </header>
 
@@ -114,7 +114,7 @@ export default function QuestsPage() {
       ) : !userId ? (
         <section className="quest-picker-empty">
           <h2>Sign in to choose your quest.</h2>
-          <Link className="auth-submit link-button" href="/signup">Go to sign in →</Link>
+          <a className="auth-submit link-button" href="/signup">Go to sign in →</a>
         </section>
       ) : (
         <section className="quest-picker-grid" aria-label="Available quests">

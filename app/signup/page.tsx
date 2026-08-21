@@ -1,7 +1,7 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages */
 
 import { FormEvent, useState } from "react";
-import Link from "next/link";
 
 type Mode = "signup" | "signin";
 
@@ -76,11 +76,11 @@ export default function SignupPage() {
   return (
     <main className="auth-page">
       <header className="auth-header">
-        <Link className="brand" href="/" aria-label="QuestLoop home">
+        <a className="brand" href="/" aria-label="QuestLoop home">
           <span className="brand-mark" aria-hidden="true">Q</span>
           <span>QuestLoop</span>
-        </Link>
-        <Link className="auth-back" href="/">← Back to home</Link>
+        </a>
+        <a className="auth-back" href="/">← Back to home</a>
       </header>
 
       <section className="auth-layout">

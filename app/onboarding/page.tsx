@@ -1,8 +1,8 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages */
 
 import { FormEvent, useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import Link from "next/link";
 
 const HANDLE_PATTERN = /^[a-z0-9_]{3,20}$/;
 
@@ -103,7 +103,7 @@ export default function OnboardingPage() {
           <span className="step-badge">Email confirmation needed</span>
           <h1>Confirm your email first.</h1>
           <p>Open the confirmation link Supabase sent to your inbox, then return here.</p>
-          <Link className="auth-submit link-button" href="/signup">Return to sign in →</Link>
+          <a className="auth-submit link-button" href="/signup">Return to sign in →</a>
         </section>
       </main>
     );
@@ -112,7 +112,7 @@ export default function OnboardingPage() {
   return (
     <main className="onboarding-page">
       <section className="onboarding-card">
-        <Link className="brand onboarding-brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></Link>
+        <a className="brand onboarding-brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
         <span className="step-badge">Step 2 of 3</span>
         <h1>{saved ? "You’re ready to begin." : "Choose your public handle."}</h1>
         <p>{saved ? "Next, you’ll choose your first quest and submit Day 1 proof." : "This becomes your shareable QuestLoop profile address."}</p>
@@ -127,7 +127,7 @@ export default function OnboardingPage() {
         ) : (
           <div className="onboarding-success">
             <div><span>✓</span><strong>@{handle}</strong><small>Public profile reserved</small></div>
-            <Link className="auth-submit link-button" href="/quests">Choose my first quest →</Link>
+            <a className="auth-submit link-button" href="/quests">Choose my first quest →</a>
           </div>
         )}
         <p className={`auth-message ${saved ? "success" : ""}`} aria-live="polite">{message}</p>
