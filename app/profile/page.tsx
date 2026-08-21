@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 
 import { useEffect, useState } from "react";
+import AccountMenu from "../../components/account-menu";
 
 type Profile = {
   id: string;
@@ -38,6 +39,7 @@ export default function PublicProfilePage() {
   const [questNames, setQuestNames] = useState<Record<string, string>>({});
   const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const [viewerId, setViewerId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [shareMessage, setShareMessage] = useState("");
 
@@ -46,11 +48,14 @@ export default function PublicProfilePage() {
 
     async function loadProfile() {
       const { supabase } = await import("../../lib/supabase");
+      const { data: authData } = await supabase.auth.getUser();
+      if (!active) return;
+      setViewerId(authData.user?.id ?? null);
+
       const requestedHandle = new URLSearchParams(window.location.search).get("handle")?.trim().toLowerCase();
       let handle = requestedHandle;
 
       if (!handle) {
-        const { data: authData } = await supabase.auth.getUser();
         if (authData.user) {
           const { data: ownProfile } = await supabase.from("profiles").select("handle").eq("id", authData.user.id).maybeSingle();
           handle = ownProfile?.handle ?? undefined;
@@ -164,7 +169,20 @@ export default function PublicProfilePage() {
     <main className="public-profile-page">
       <header className="dashboard-header">
         <a className="brand" href="/"><span className="brand-mark">Q</span><span>QuestLoop</span></a>
-        <nav><a href="/quests">Discover quests</a><a className="nav-cta" href="/signup">Join QuestLoop</a></nav>
+        <nav>
+          <a href="/quests">Discover quests</a>
+          {viewerId ? (
+            <>
+              {viewerId === profile.id && <a href="/settings">Edit profile</a>}
+              <AccountMenu />
+            </>
+          ) : (
+            <>
+              <a href="/signup?mode=signin">Sign in</a>
+              <a className="nav-cta" href="/signup">Sign up</a>
+            </>
+          )}
+        </nav>
       </header>
 
       <section className="public-profile-header">
