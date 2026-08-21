@@ -28,6 +28,7 @@ export default function CommunityPage() {
   const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
   const [myCheers, setMyCheers] = useState<Set<string>>(new Set());
   const [updatingProofId, setUpdatingProofId] = useState<string | null>(null);
+  const [celebratingProofId, setCelebratingProofId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
@@ -150,6 +151,10 @@ export default function CommunityPage() {
         return next;
       });
       setCheerCounts((current) => ({ ...current, [proof.id]: Math.max(0, (current[proof.id] ?? 0) + (hasCheered ? -1 : 1)) }));
+      if (!hasCheered) {
+        setCelebratingProofId(proof.id);
+        window.setTimeout(() => setCelebratingProofId((current) => current === proof.id ? null : current), 1450);
+      }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The cheer could not be updated.");
     } finally {
@@ -193,7 +198,8 @@ export default function CommunityPage() {
             const isMine = proof.user_id === userId;
             const hasCheered = myCheers.has(proof.id);
             return (
-              <article className="feed-proof-card" key={proof.id} style={{ animationDelay: `${Math.min(index, 8) * 55}ms` }}>
+              <article className={`feed-proof-card ${celebratingProofId === proof.id ? "celebrating" : ""}`} key={proof.id} style={{ animationDelay: `${Math.min(index, 8) * 55}ms` }}>
+                <span className="cheer-achievement" aria-hidden="true"><b>♥</b><span><strong>Cheer sent</strong><small>＋1 momentum</small></span></span>
                 {profileHandles[proof.user_id] && (
                   <a className="feed-profile-link" href={`/profile?handle=${profileHandles[proof.user_id]}`} aria-label={`Open ${handles[proof.user_id] || "member"}'s profile`} />
                 )}
@@ -217,7 +223,6 @@ export default function CommunityPage() {
                       <button type="button" className={`cheer-button ${hasCheered ? "cheered" : ""}`} onClick={() => toggleCheer(proof)} disabled={updatingProofId === proof.id} aria-label={hasCheered ? "Remove your cheer" : "Cheer this progress update"}>
                         <span className="cheer-heart" aria-hidden="true">{hasCheered ? "♥" : "♡"}</span>
                         <span className="cheer-label">{hasCheered ? "Cheered!" : "Cheer"}</span>
-                        <span className="cheer-particles" aria-hidden="true"><i>✦</i><i>♥</i><i>＋1</i><i>✦</i><i>♥</i></span>
                       </button>
                     )}
                     <span>{cheerCounts[proof.id] ?? 0} cheers</span>

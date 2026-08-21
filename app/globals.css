@@ -1148,3 +1148,103 @@ footer {
   .feed-proof-actions .cheer-button.cheered .cheer-heart,
   .feed-proof-actions .cheered .cheer-particles i { animation: none; }
 }
+
+/* Refined achievement-level cheer experience */
+.community-feed .feed-proof-card { overflow: hidden; }
+.feed-proof-actions .cheer-button {
+  min-width: 148px;
+  min-height: 52px;
+  padding: 0 20px;
+  gap: 11px;
+  border-radius: 12px;
+  border-color: var(--card-border);
+  background: var(--surface-raised);
+  box-shadow: 0 5px 16px rgba(23,26,22,.09);
+}
+.feed-proof-actions .cheer-button .cheer-heart { width: 30px; color: #e6533d; font-size: 30px; line-height: 1; text-align: center; }
+.feed-proof-actions .cheer-button .cheer-label { font-size: 13px; font-weight: 820; }
+.feed-proof-actions .cheer-button:hover { border-color: #ef745f; background: #fff8f6; color: #a83322; box-shadow: 0 9px 24px rgba(230,83,61,.16); }
+.feed-proof-actions .cheer-button.cheered,
+[data-theme="dark"] .feed-proof-actions .cheer-button.cheered {
+  border-color: #e86c57;
+  background: #fff0ec;
+  color: #9d2f20;
+  box-shadow: inset 0 0 0 1px rgba(232,108,87,.12), 0 6px 18px rgba(230,83,61,.12);
+  animation: none;
+}
+.feed-proof-actions .cheer-button.cheered .cheer-heart { color: #df4933; animation: none; }
+.feed-proof-actions .cheer-button.cheered::before { display: none; }
+[data-theme="dark"] .feed-proof-actions .cheer-button { background: #1c211c; border-color: #3d453b; }
+[data-theme="dark"] .feed-proof-actions .cheer-button:hover { background: #2b211e; border-color: #b95c4d; }
+[data-theme="dark"] .feed-proof-actions .cheer-button.cheered { background: #38231f; color: #ffb1a3; }
+[data-theme="dark"] .feed-proof-actions .cheer-button.cheered .cheer-heart { color: #ff806b; }
+.feed-proof-card.celebrating .cheer-button.cheered { animation: achievement-button .52s cubic-bezier(.2,.9,.25,1.25); }
+
+.cheer-achievement {
+  position: absolute;
+  z-index: 6;
+  top: 18px;
+  right: 18px;
+  min-width: 156px;
+  padding: 10px 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  background: #171a16;
+  color: white;
+  box-shadow: 0 14px 36px rgba(23,26,22,.26);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-12px) scale(.96);
+}
+.cheer-achievement > b { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 9px; background: var(--coral); color: #171a16; font-size: 17px; }
+.cheer-achievement > span { display: flex; flex-direction: column; gap: 2px; color: white; font-family: inherit; }
+.cheer-achievement strong { font-size: 11px; letter-spacing: -.01em; }
+.cheer-achievement small { color: #bfc6bc; font-family: var(--font-geist-mono); font-size: 7px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.feed-proof-card.celebrating .cheer-achievement { animation: achievement-toast 1.35s cubic-bezier(.2,.8,.2,1) forwards; }
+.community-feed .feed-proof-card.celebrating { z-index: 2; animation: achievement-card 1.25s cubic-bezier(.2,.8,.2,1) forwards; }
+.community-feed .feed-proof-card.celebrating::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 25%, rgba(255,112,88,.12) 45%, rgba(200,241,105,.14) 52%, transparent 72%);
+  pointer-events: none;
+  transform: translateX(-115%);
+  animation: achievement-sweep 1s .08s ease-out forwards;
+}
+
+@keyframes achievement-button {
+  0% { transform: scale(.9); }
+  55% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+@keyframes achievement-card {
+  0% { box-shadow: inset 0 0 0 0 rgba(255,112,88,0); background: transparent; }
+  28% { box-shadow: inset 0 0 0 2px rgba(255,112,88,.85), 0 14px 36px rgba(255,112,88,.16); background: color-mix(in srgb, var(--coral) 6%, var(--surface-raised)); }
+  100% { box-shadow: inset 0 0 0 1px rgba(255,112,88,0); background: transparent; }
+}
+@keyframes achievement-sweep {
+  0% { transform: translateX(-115%); }
+  100% { transform: translateX(115%); }
+}
+@keyframes achievement-toast {
+  0% { opacity: 0; transform: translateY(-12px) scale(.96); }
+  14%, 72% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-7px) scale(.98); }
+}
+
+@media (max-width: 600px) {
+  .feed-proof-actions .cheer-button { min-width: 136px; min-height: 50px; padding-inline: 16px; }
+  .cheer-achievement { top: 12px; right: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feed-proof-card.celebrating .cheer-button.cheered,
+  .feed-proof-card.celebrating .cheer-achievement,
+  .community-feed .feed-proof-card.celebrating,
+  .community-feed .feed-proof-card.celebrating::after { animation: none; }
+  .feed-proof-card.celebrating .cheer-achievement { opacity: 1; transform: none; }
+}
